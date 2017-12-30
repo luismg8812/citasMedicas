@@ -1,50 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<div class="row">
-    <div class="col col-md-12 mt-2">
-        <h4>Administración de Pacientes</h4>
-    </div>
-</div>
-<div class="row">
+<form  id="needs-validation" onsubmit ="crarPaciente()">
+  <div class="form-row">
     <div class="col-md-6 mb-3">
-        <label for="validationServer01">First name</label>
-        <input type="text" class="form-control is-valid" id="validationServer01" placeholder="First name" value="Mark" required>
+      <label for="nombrePaciente">* Nombre Completo</label>
+      <input class="form-control" id="nombrePaciente" placeholder="Nombre del paciente" required>
+      <div class="invalid-feedback">
+        El nombre del paciente es obligatorio
+      </div>
     </div>
     <div class="col-md-6 mb-3">
-        <label for="validationServer02">Last name</label>
-        <input type="text" class="form-control is-valid" id="validationServer02" placeholder="Last name" value="Otto" required>
+      <label for="fechaPaciente">* Fecha de nacimiento</label>
+      <input id="fechaPaciente" type="date" class="form-control" required>
     </div>
-</div>
-<div class="row">
+  </div>
+  <div class="form-row">
     <div class="col-md-6 mb-3">
-        <label for="validationServer03">City</label>
-        <input type="text" class="form-control is-invalid" id="validationServer03" placeholder="City" required>
-        <div class="invalid-feedback">
-            Please provide a valid city.
-        </div>
+      <label for="sexoPaciente">* Sexo</label>
+      <select class="custom-select form-control" id="sexoPaciente">
+        <option selected>Seleccione</option>
+        <option value="m">Masculino</option>
+        <option value="f">Femenino</option>
+        <option value="t">Transgenero</option>
+      </select>
     </div>
-    <div class="col-md-3 mb-3">
-        <label for="validationServer04">State</label>
-        <input type="text" class="form-control is-invalid" id="validationServer04" placeholder="State" required>
-        <div class="invalid-feedback">
-            Please provide a valid state.
-        </div>
+    <div class="col-md-6 mb-3">
+      <label for="estadoCivilPaciente">Estado civil</label>
+      <select class="custom-select form-control" id="estadoCivilPaciente">
+        <option selected>Seleccione</option>
+        <option value="s">Soltero/a</option>
+        <option value="c">Casado/a</option>
+        <option value="v">Viudo/a</option>
+        <option value="d">Divorciado/a</option>
+        <option value="a">Amantes</option>
+      </select>
     </div>
-    <div class="col-md-3 mb-3">
-        <label for="validationServer05">Zip</label>
-        <input type="text" class="form-control is-invalid" id="validationServer05" placeholder="Zip" required>
-        <div class="invalid-feedback">
-            Please provide a valid zip.
-        </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="EscolaridadPaciente">Escolaridad</label>
+      <select class="custom-select form-control" id="EscolaridadPaciente">
+        <option selected>Seleccione</option>
+        <option value="ninguna">Ninguna</option>
+        <option value="primaria">Primaria</option>
+        <option value="tecnico">Técnico
+          <Secuendaria/option>
+            <option value="universitario">Universitario</option>
+            <option value="posgrado">Posgrado</option>
+      </select>
     </div>
+    <div class="col-md-6 mb-3">
+      <label for="tipoIdentificacionPaciente">* Tipo Identificación</label>
+      <select class="custom-select form-control" id="tipoIdentificacionPaciente">
+        <option selected>Seleccione</option>
+        <option value="cc">Cédula de Ciudadanía</option>
+        <option value="ti">Targeta de identidad</option>
+        <option value="rc">Registro Civil</option>
+        <option value="ce">Cédula de Extranjería</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="identificacionPaciente">* Identificación</label>
+      <input class="form-control" id="identificacionPaciente" placeholder="Identificación" required>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="religionPaciente">Religión</label>
+      <input id="religionPaciente" class="form-control" placeholder="Religión" required>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="direccionPaciente">Dirección</label>
+      <input class="form-control" id="identificacionPaciente" placeholder="direccionPaciente" required>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="emailPaciente">Email</label>
+      <input id="emailPaciente" class="form-control" placeholder="Email" required>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="fijoPaciente">Fijo</label>
+      <input class="form-control" id="fijoPaciente" placeholder="Fijo" required>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="celularPaciente">Celular</label>
+      <input id="celularPaciente" class="form-control" placeholder="Celular" required>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+    <button  class="btn btn-primary" type="sutmit" >Guardar</button>
 </div>
-<div class="row">
-    <div class="col-md-1">
-        <button class="btn btn-primary" type="submit">Buscar</button>
-    </div>
-    <div class="col-md-1">
-        <button class="btn btn-primary" type="submit">Crear</button>
-    </div>
-</div>
+</form >
 
 </html>
