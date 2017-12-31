@@ -1,30 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<form  id="needs-validation" onsubmit ="crarPaciente()">
+<form id="crearPacientesForm" onsubmit="crarPaciente()">
   <div class="form-row">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="nombrePaciente">* Nombre Completo</label>
       <input class="form-control" id="nombrePaciente" placeholder="Nombre del paciente" required>
-      <div class="invalid-feedback">
-        El nombre del paciente es obligatorio
-      </div>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="fechaPaciente">* Fecha de nacimiento</label>
       <input id="fechaPaciente" type="date" class="form-control" required>
     </div>
   </div>
   <div class="form-row">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="sexoPaciente">* Sexo</label>
-      <select class="custom-select form-control" id="sexoPaciente">
+      <select class="custom-select form-control" id="sexoPaciente" required>
         <option selected>Seleccione</option>
         <option value="m">Masculino</option>
         <option value="f">Femenino</option>
         <option value="t">Transgenero</option>
       </select>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="estadoCivilPaciente">Estado civil</label>
       <select class="custom-select form-control" id="estadoCivilPaciente">
         <option selected>Seleccione</option>
@@ -37,19 +34,19 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="EscolaridadPaciente">Escolaridad</label>
       <select class="custom-select form-control" id="EscolaridadPaciente">
         <option selected>Seleccione</option>
         <option value="ninguna">Ninguna</option>
         <option value="primaria">Primaria</option>
-        <option value="tecnico">Técnico
-          <Secuendaria/option>
-            <option value="universitario">Universitario</option>
-            <option value="posgrado">Posgrado</option>
+        <option value="tecnico">Técnico</option>
+        <option value="Secuendaria">Secuendaria</option>
+        <option value="universitario">Universitario</option>
+        <option value="posgrado">Posgrado</option>
       </select>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="tipoIdentificacionPaciente">* Tipo Identificación</label>
       <select class="custom-select form-control" id="tipoIdentificacionPaciente">
         <option selected>Seleccione</option>
@@ -61,39 +58,39 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="identificacionPaciente">* Identificación</label>
-      <input class="form-control" id="identificacionPaciente" placeholder="Identificación" required>
+      <input class="form-control" type="number" id="identificacionPaciente" placeholder="Identificación" required>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="religionPaciente">Religión</label>
-      <input id="religionPaciente" class="form-control" placeholder="Religión" required>
+      <input id="religionPaciente" class="form-control" placeholder="Religión" >
     </div>
   </div>
   <div class="form-row">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="direccionPaciente">Dirección</label>
-      <input class="form-control" id="identificacionPaciente" placeholder="direccionPaciente" required>
+      <input class="form-control" id="direccionPaciente" placeholder="direccionPaciente" required>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="emailPaciente">Email</label>
-      <input id="emailPaciente" class="form-control" placeholder="Email" required>
+      <input id="emailPaciente" class="form-control" type="email" placeholder="Email" >
     </div>
   </div>
   <div class="form-row">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="fijoPaciente">Fijo</label>
-      <input class="form-control" id="fijoPaciente" placeholder="Fijo" required>
+      <input class="form-control"  type="number" id="fijoPaciente" placeholder="Fijo">
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 ">
       <label for="celularPaciente">Celular</label>
-      <input id="celularPaciente" class="form-control" placeholder="Celular" required>
+      <input id="celularPaciente" type="number" class="form-control" placeholder="Celular" required>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-    <button  class="btn btn-primary" type="sutmit" >Guardar</button>
-</div>
-</form >
+    <button class="btn btn-primary" type="sutmit" >Guardar</button>
+  </div>
+</form>
 
 </html>
