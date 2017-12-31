@@ -17,5 +17,5 @@ function opcionMenu(op) {
         default:
             break;
     }
-
+    $("#navbarNavDropdown").collapse('hide');
 }

@@ -5,38 +5,35 @@
         <h4>Administración de Pacientes</h4>
     </div>
 </div>
-<form class="form-inline">
 
-    <div class="form-group mx-sm-3 mb-3 mt-3">
-        <label for="inputPassword2" class="mx-sm-3">Identificación</label>
-        <input type="number" class="form-control" id="inputPassword2" placeholder="Buscar por identificación">
-    </div>
-    <button type="submit" class="btn btn-primary mb-2" onclick="buscarPacientes()">Buscar</button>
-</form>
 <div class="row">
+    <div class="col-sm-12 col-md-2">
+        <label for="identificacionBusquedaPaciente" class="mx-sm-3">Identificación</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+        <input type="number" class="form-control mb-2" id="identificacionBusquedaPaciente" placeholder="Buscar por identificación">
+    </div>
+    <div class="col-sm-12 col-md-2">
+        <button type="submit" class="btn btn-primary mb-2" onclick="buscarPacientes()">Buscar</button>
+    </div>
+</div>
 
+<div class="row">
     <div class="col-md-1 mb-3">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crearPaciente">Crear</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" id="btnCrearPacienteModal" data-target="#crearPaciente">Crear</button>
     </div>
 </div>
 <!-- data table -->
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Nombre Paciente</th>
+            <th>Op</th>
+            <th>Paciente</th>
             <th>Identificación</th>
-            <th>Sexo</th>
-            <th>Celular</th>
-            <th>Dirección</th>
         </tr>
     </thead>
     <tbody id="tablaPacientes">
-        <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
-        </tr>
-        
+
     </tbody>
 </table>
 
