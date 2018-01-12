@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class="row">
+    <div class="col col-md-12 mt-2 mb-3">
+        <h4>Citas medicas</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-3 ">
+        <label for="pacienteBusquedaCita" >Busqueda de Citas de pacientes (Nombre o Identificación)</label>
+    </div>
+    <div class="col-sm-12 col-md-6 ">
+        <input class="form-control col-md-9" id="pacienteBusquedaCita" placeholder="Buscar por nombre o identificación">
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-xs-5 col-md-3 col-lg-2 ">
+        <button type="submit" class="btn btn-primary mb-3" onclick="buscarPacientes()">Buscar</button>
+    </div>
+    <div class="col-xs-5 col-md-3 col-lg-2">
+        <button type="submit" class="btn btn-primary mb-3" onclick="buscarPacientes()">Agendar Cita</button>
+    </div>
+    <div class="col-xs-5 col-md-3 col-lg-2">
+        <button type="submit" class="btn btn-primary mb-3" onclick="buscarPacientes()">Imprimir citas</button>
+    </div>
+    <div class="col-xs-5 col-md-3 col-lg-2">
+        <button type="submit" class="btn btn-primary mb-3" onclick="buscarPacientes()">Crear Pacitente</button>
+    </div>
+</div>
+<!-- data table -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Op</th>
+            <th>Paciente</th>
+            <th>Celular</th>
+        </tr>
+    </thead>
+    <tbody id="tablaCitas">
+
+    </tbody>
+</table>
+
+</html>

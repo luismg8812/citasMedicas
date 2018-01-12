@@ -19,27 +19,39 @@
                                         </a>
                                 </li>
                                 <li class="nav-item">
-                                        <a class="nav-link" href="#" id="profecionales" onclick="opcionMenu(this)">Profecionales </a>
+                                        <a class="nav-link" href="#" onclick="opcionMenu(this)" id="profecionales">Modificar Cuenta</a>
                                 </li>
-                                <li class="nav-item">
-                                        <a class="nav-link" href="#">Odontograma</a>
-                                </li>
-                                <li class="nav-item">
-                                        <a class="nav-link" href="#">Formulación</a>
-                                </li>
-                                <li class="nav-item">
-                                        <a class="nav-link" href="#">Impresión HC</a>
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarCitasLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Citas
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarCitasLink">
+                                                <a class="dropdown-item" href="#" onclick="opcionMenu(this)" id="agregarCita">Ver/Agregar nueva cita</a>
+                                                <a class="dropdown-item" href="#" onclick="opcionMenu(this)" id="buscarCitaPaciente">Buscar Citas Paciente</a>
+                                                <a class="dropdown-item" href="#">Citas del día</a>
+                                                <a class="dropdown-item" href="#">Imprimir citas</a>
+                                        </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Evolución
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#" onclick="opcionMenu(this)">Action</a>
                                                 <a class="dropdown-item" href="#">Another action</a>
                                                 <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
                                 </li>
+                                <li class="nav-item">
+                                        <a class="nav-link" href="#" onclick="opcionMenu(this)">Odontograma</a>
+                                </li>
+                                <li class="nav-item">
+                                        <a class="nav-link" href="#" onclick="opcionMenu(this)">Formulación</a>
+                                </li>
+                                <li class="nav-item">
+                                        <a class="nav-link" href="#" onclick="opcionMenu(this)">Impresión HC</a>
+                                </li>
+                              
                                 <li class="nav-item">
                                         <a class="nav-link" href="#" onclick="cerrarSesision()">Cerrar sesión</a>
                                 </li>

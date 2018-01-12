@@ -30,7 +30,6 @@ function crarPaciente() {
             celularPaciente: celularPaciente,
             user: user.email
         });
-        alert("editar");
     } else {
         refEditarPaciente = null;
         refPaciente = firebase.database().ref().child("pacientes/");
@@ -49,7 +48,6 @@ function crarPaciente() {
             celularPaciente: celularPaciente,
             user: user.email
         });
-        alert("nuevo");
     }
     $("#crearPaciente").modal("hide");
 }
@@ -58,33 +56,56 @@ function buscarPacientes() {
     //alert("entra a buscar pacientes");
     var identificacionBusquedaPaciente = document.getElementById("identificacionBusquedaPaciente").value;
     var refPaciente;
+    var filasTablaPacientes = "";
     if (identificacionBusquedaPaciente != '') {
+        var tablaPacientes = document.getElementById("tablaPacientes");
         refPaciente = firebase.database().ref().child("pacientes/");
+        var resul = refPaciente.orderByChild("identificacionPaciente").equalTo(identificacionBusquedaPaciente).limitToFirst(1).on("value", function (snapshot) {
+            var datos = snapshot.val();
+            for (var key in datos) {
+                var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
+                var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
+                filasTablaPacientes += "<tr>" +
+                    "<td>" + botonEdit + " </td>" +
+                    "<td>" + datos[key].nombrePaciente + "</td>" +
+                    "<td>" + datos[key].identificacionPaciente + "</td>" +
+                    //"<td>" + datos[key].sexoPaciente + "</td>" +
+                    //"<td>" + datos[key].celularPaciente + "</td>" +
+                    //"<td>" + datos[key].direccionPaciente + "</td>" +
+                    "</tr>";
+            }
+            tablaPacientes.innerHTML = filasTablaPacientes;    
+        });
+
     } else {
         refPaciente = firebase.database().ref().child("pacientes/");
-    }
-    var tablaPacientes = document.getElementById("tablaPacientes");
-    var filasTablaPacientes = "";
+        var tablaPacientes = document.getElementById("tablaPacientes");
+        filasTablaPacientes = "";
+        var user = firebase.auth().currentUser;
+        refPaciente.once("value", function (snap) {
+            var datos = snap.val();
+            for (var key in datos) {
+                if (datos[key].user == user.email) {
+                    //alert(key);
+                    var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
+                    var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
+                    //alert(botonEdit);
+                    filasTablaPacientes += "<tr>" +
+                        "<td>" + botonEdit + " </td>" +
+                        "<td>" + datos[key].nombrePaciente + "</td>" +
+                        "<td>" + datos[key].identificacionPaciente + "</td>" +
+                        //"<td>" + datos[key].sexoPaciente + "</td>" +
+                        //"<td>" + datos[key].celularPaciente + "</td>" +
+                        //"<td>" + datos[key].direccionPaciente + "</td>" +
+                        "</tr>";
+                    //alert(datos[key].nombrePaciente);
+                }
 
-    refPaciente.once("value", function (snap) {
-        var datos = snap.val();
-        for (var key in datos) {
-            //alert(key);
-            var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
-            var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
-            //alert(botonEdit);
-            filasTablaPacientes += "<tr>" +
-                "<td>" + botonEdit + " </td>" +
-                "<td>" + datos[key].nombrePaciente + "</td>" +
-                "<td>" + datos[key].identificacionPaciente + "</td>" +
-                //"<td>" + datos[key].sexoPaciente + "</td>" +
-                //"<td>" + datos[key].celularPaciente + "</td>" +
-                //"<td>" + datos[key].direccionPaciente + "</td>" +
-                "</tr>";
-            //alert(datos[key].nombrePaciente);
-        }
-        tablaPacientes.innerHTML = filasTablaPacientes;
-    });
+            }
+            tablaPacientes.innerHTML = filasTablaPacientes;
+        });
+    }
+
 }
 
 function editarPaciente(btn) {

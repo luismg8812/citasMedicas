@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<form id="crearPacientesForm" onsubmit="guardarUsuario()">
+    <div class="row">
+        <div class="col col-md-12 mt-3 mb-3">
+            <h4>Administración de la cuenta</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-2">
+            <label for="nombreProfecional" class="mx-sm-3">Nombre</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <input class="form-control mb-2" id="nombreProfecional" placeholder="Nombre del profecional" required>
+        </div>
+        <div class="col-sm-12 col-md-2">
+            <label for="especialidadProfecional" class="mx-sm-3">Especialización</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <select class="custom-select form-control" id="especialidadProfecional">
+                <option selected>Seleccione</option>
+                <option value="cardiologo">Cardiólogia</option>
+                <option value="Odontologo">Odontólogia</option>
+                <option value="endocrinologia">Endocrinologia</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-2">
+            <label for="identificacionProfecional" class="mx-sm-3">Identificación</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <input class="form-control mb-2" id="identificacionProfecional" placeholder="identificación del profecional">
+        </div>
+        <div class="col-sm-12 col-md-2">
+            <label for="direccionProfecional" class="mx-sm-3">Dirección</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <input class="form-control mb-2" id="direccionProfecional" placeholder="Dirección del profecional">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-2">
+            <label for="celularProfecional" class="mx-sm-3">Celular </label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <input class="form-control mb-2" id="celularProfecional" placeholder="Celular del profecional">
+        </div>
+        <div class="col-sm-12 col-md-2">
+            <label for="fijoProfecional" class="mx-sm-3">Fijo</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <input class="form-control mb-2" id="fijoProfecional" placeholder="Fijo del profecional">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-2">
+            <label for="emailProfecional" class="mx-sm-3" autocomplete="off">Email </label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <input class="form-control mb-2" type="email" id="emailProfecional" placeholder="Email del profecional" required>
+        </div>
+        <div class="col-sm-12 col-md-2">
+            <label for="passwordProfecional" class="mx-sm-3">Contraseña</label>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <input class="form-control mb-2" type="password" id="passwordProfecional" minlength="6" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 ">
+
+        </div>
+        <div class="col-sm-2 ">
+            <button type="submit" class="btn btn-primary mb-2">Guardar</button>
+        </div>
+    </div>
+</form>
+
+</html>
