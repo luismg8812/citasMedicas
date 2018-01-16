@@ -10,7 +10,7 @@ function opcionMenu(op) {
         case 'agregarCita':
             $(document).ready(function () {
                 $('#opciones').load('pages/citas/nuevaCita.html');
-                nuevaCita();
+               // nuevaCita();
             });
             
             break;
