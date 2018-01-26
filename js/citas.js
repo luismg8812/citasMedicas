@@ -12,22 +12,23 @@ function crearCita() {
         return;
     }
     var idEvento = document.getElementById("idEvento").value;
-    if (idEvento != '') {
-        alert("editar evento");
-    } else {
-        var refPaciente = firebase.database().ref().child("eventos/");
-        refPaciente.push({
-            editable: 'true',
-            end: diaCita + " " + finCita,
-            idProfecional: user.uid,
-            idPaciente: identificacionPaciente,
-            start: diaCita + " " + inicioCita,
-            title: nombrePaciente,
-            motivo: motivoCita,
-            id: diaCita + inicioCita + identificacionPaciente
-        });
+    if (idEvento == '') {
+        idEvento = diaCita + inicioCita + identificacionPaciente;
+        idEvento = idEvento.replace("-", ":");
     }
-
+    refEvento = firebase.database().ref("eventos/" + idEvento);
+    refEvento.set({
+        editable: 'true',
+        end: diaCita + " " + finCita,
+        idProfecional: user.uid,
+        idPaciente: identificacionPaciente,
+        start: diaCita + " " + inicioCita,
+        title: nombrePaciente,
+        motivo: motivoCita,
+        id: idEvento,
+        confirmada:false,
+        costo:0
+    });
     $("#crearCitaModal").modal("hide");
     //alert("Cita creada Exitosamente");
     cargarDespuesGuardar();
@@ -64,6 +65,30 @@ function cargarCitas() {
             header: {
                 center: 'title',
                 left: 'month,agendaWeek,agendaDay,listDay' // buttons for switching between views
+            },
+            eventDrop: function (event, delta, revertFunc) {
+                //alert("funcionalidad en construcción");
+                //alert(event.title + " was dropped on " + event.start.format());
+
+                if (!confirm("Esta seguro de editar la cita?")) {
+                    revertFunc();
+                } else {
+                    refEvento = firebase.database().ref("eventos/" + event.id);
+                    refEvento.set({
+                        end: event.end.format(),
+                        start: event.start.format(),
+                        editable: 'true',
+                        idProfecional: event.idProfecional,
+                        idPaciente: event.idPaciente,
+                        title: event.title,
+                        motivo: event.motivo,
+                        id: event.id, 
+                        confirmada:false,
+                        costo:0
+
+                    });
+                }
+
             },
             dayClick: function (date, jsEvent, view) {
                 // alert('Clicked on: ' + date.format());
@@ -135,6 +160,32 @@ function cargarCitas() {
 
     //alert("carga citas");
 }
+
+function buscarcitasPaciente() {
+    var pacienteBusquedaCita = document.getElementById("pacienteBusquedaCita").value;
+    if (pacienteBusquedaCita == '') {
+        return;
+    }
+    var filasTablaPacientes = "";
+    refCitas = firebase.database().ref().child("eventos/");
+    var resul = refCitas.orderByChild("idPaciente").equalTo(pacienteBusquedaCita).on("value", function (snapshot) {
+        var datos = snapshot.val();
+        for (var key in datos) {
+            var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
+            var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-trash\" aria-hidden=\"true\" ></i> </button>';
+            filasTablaPacientes += "<tr>" +
+                "<td>" + botonEdit + botonVer + " </td>" +
+                "<td>" + datos[key].title + "</td>" +
+                "<td>" + datos[key].idPaciente + "</td>" +
+                //"<td>" + datos[key].sexoPaciente + "</td>" +
+                //"<td>" + datos[key].celularPaciente + "</td>" +
+                //"<td>" + datos[key].direccionPaciente + "</td>" +
+                "</tr>";
+        }
+        tablaCitas.innerHTML = filasTablaPacientes;
+    });
+}
+
 function buscarPacienteCita() {
     //alert("busca citaPaciente");
     var identificacionBusquedaPaciente = document.getElementById("pacienteId").value;
@@ -165,4 +216,56 @@ function selectPacienteCita(paciente) {
     document.getElementById("pacienteSelect").setAttribute("key", identificacionPaciente);
     document.getElementById("tablaPacientesCita").innerHTML = "";
     //alert(nombrePaciente);
+}
+
+function cargarCitasDiaAux() {
+    var user = firebase.auth().currentUser;
+    var refCitas = firebase.database().ref().child("eventos/");
+    var datos;
+    var resul = refCitas.orderByChild("idProfecional").equalTo(user.uid).on("value", function (snapshot) {
+        datos = snapshot.val();
+        var eventos = [];
+        for (var key in datos) {
+            eventos.push(datos[key]);
+            // alert(eventos);
+            // console.log(datos[key]);
+        }
+        $('#calendarAux').fullCalendar({
+            defaultView: 'listDay',
+            eventSources: [
+                eventos,
+            ],
+            eventClick: function (calEvent, jsEvent, view) {
+                $("#confirmarCita").modal("show");
+                document.getElementById("idCitaDiaAux").value = calEvent.id;
+                        
+               
+
+            }
+        });
+    });
+
+}
+
+function guardarConfirmacion(){
+    alert("guarda confirmacion: "+ document.getElementById("idCitaDiaAux").value);
+    
+    refEvento = firebase.database().ref("eventos/" + event.id);
+    alert("guarda confirmacion: "+ refEvento.end);
+
+    // refEvento.set({
+    //     end: event.end.format(),
+    //     start: event.start.format(),
+    //     editable: 'true',
+    //     idProfecional: event.idProfecional,
+    //     idPaciente: event.idPaciente,
+    //     title: event.title,
+    //     motivo: event.motivo,
+    //     id: event.id, 
+    //     confirmada:false,
+    //     costo:0
+    // });
+    //if(si confirmacion es true le cambia de color a la cita){
+        // $(this).css('border-color', 'red');
+    //}
 }
