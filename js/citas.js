@@ -26,8 +26,8 @@ function crearCita() {
         title: nombrePaciente,
         motivo: motivoCita,
         id: idEvento,
-        confirmada:false,
-        costo:0
+        confirmada: false,
+        costo: 0
     });
     $("#crearCitaModal").modal("hide");
     //alert("Cita creada Exitosamente");
@@ -82,9 +82,9 @@ function cargarCitas() {
                         idPaciente: event.idPaciente,
                         title: event.title,
                         motivo: event.motivo,
-                        id: event.id, 
-                        confirmada:false,
-                        costo:0
+                        id: event.id,
+                        confirmada: false,
+                        costo: 0
 
                     });
                 }
@@ -98,6 +98,7 @@ function cargarCitas() {
                 // var diaCita = document.getElementById("dia").value;
                 // var inicioCita = document.getElementById("inicio").value;
                 // var finCita = document.getElementById("fin").value;
+              
                 switch (view.name) {
                     case 'month':
                         $(this).css('background-color', 'red');
@@ -162,6 +163,7 @@ function cargarCitas() {
 }
 
 function buscarcitasPaciente() {
+    var user = firebase.auth().currentUser;
     var pacienteBusquedaCita = document.getElementById("pacienteBusquedaCita").value;
     if (pacienteBusquedaCita == '') {
         return;
@@ -171,6 +173,9 @@ function buscarcitasPaciente() {
     var resul = refCitas.orderByChild("idPaciente").equalTo(pacienteBusquedaCita).on("value", function (snapshot) {
         var datos = snapshot.val();
         for (var key in datos) {
+            // if(){
+                
+            // }
             var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
             var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-trash\" aria-hidden=\"true\" ></i> </button>';
             filasTablaPacientes += "<tr>" +
@@ -192,7 +197,6 @@ function buscarPacienteCita() {
     if (identificacionBusquedaPaciente == '') {
         return;
     }
-
     var filasTablaPacientes = "";
     var refPaciente;
     var tablaPacientesCita = document.getElementById("tablaPacientesCita");
@@ -205,7 +209,6 @@ function buscarPacienteCita() {
         }
         tablaPacientesCita.innerHTML = filasTablaPacientes;
     });
-
 }
 
 function selectPacienteCita(paciente) {
@@ -216,6 +219,51 @@ function selectPacienteCita(paciente) {
     document.getElementById("pacienteSelect").setAttribute("key", identificacionPaciente);
     document.getElementById("tablaPacientesCita").innerHTML = "";
     //alert(nombrePaciente);
+}
+
+function cargarCitasDiaDoctor() {
+    var user = firebase.auth().currentUser;
+    var refCitas = firebase.database().ref().child("eventos/");
+    var datos;
+    var resul = refCitas.orderByChild("idProfecional").equalTo(user.uid).on("value", function (snapshot) {
+        datos = snapshot.val();
+        var eventos = [];
+        for (var key in datos) {
+            if (datos[key].confirmada) {
+                //alert("confirmada");
+                eventos.push(datos[key]);
+            }
+        }
+        $('#calendarDoctor').fullCalendar({
+            defaultView: 'listDay',
+            eventSources: [
+                eventos,
+            ],
+            eventClick: function (calEvent, jsEvent, view) {
+                $(document).ready(function () {
+                    $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
+                    
+                    var datos1;
+                    var refHistoriasClinicas = firebase.database().ref("historiasClinicas/"+calEvent.idPaciente).once('value').then(function(snapshot1){
+                        datos1 = snapshot1.val();
+                         alert("aqui llega1:"+refHistoriasClinicas );
+                         for (var key1 in datos1) {
+                            // ver como se utilizan los documentos anidados, como se crean y como se hacen consultas
+                             //aqui llena los datos de la historia clinica
+                             //document.getElementById("usadrogas").value=datos1[key1].usadrogas;
+                             //hay que recorrer las consultas para imprimirlas
+                             //<div id="consultas"></div>, reemplazar ese div con las consultas encontradas;
+                             alert("paciente:" + datos1[key1]);
+                         }
+                    });
+                   
+
+                    //falta hacer la parte que cargue la historia clinica, ver como haceer
+                    //que cargue la hv y si no existe que la cree.... todo eso aqui adentro 
+                });
+            }
+        });
+    });
 }
 
 function cargarCitasDiaAux() {
@@ -238,34 +286,26 @@ function cargarCitasDiaAux() {
             eventClick: function (calEvent, jsEvent, view) {
                 $("#confirmarCita").modal("show");
                 document.getElementById("idCitaDiaAux").value = calEvent.id;
-                        
-               
-
+                document.getElementById("costoCita").value = calEvent.costo;
             }
         });
     });
 
 }
 
-function guardarConfirmacion(){
-    alert("guarda confirmacion: "+ document.getElementById("idCitaDiaAux").value);
-    
-    refEvento = firebase.database().ref("eventos/" + event.id);
-    alert("guarda confirmacion: "+ refEvento.end);
+function guardarConfirmacion() {
 
-    // refEvento.set({
-    //     end: event.end.format(),
-    //     start: event.start.format(),
-    //     editable: 'true',
-    //     idProfecional: event.idProfecional,
-    //     idPaciente: event.idPaciente,
-    //     title: event.title,
-    //     motivo: event.motivo,
-    //     id: event.id, 
-    //     confirmada:false,
-    //     costo:0
-    // });
+    var id = document.getElementById("idCitaDiaAux").value;
+    var costoCita = document.getElementById("costoCita").value;
+    refEvento = firebase.database().ref("eventos/" + id);
+    //alert("confirmada: "+costoCita);
+
+    refEvento.update({
+        confirmada: true,
+        costo: costoCita
+    });
+    $("#confirmarCita").modal("hide");
     //if(si confirmacion es true le cambia de color a la cita){
-        // $(this).css('border-color', 'red');
+    // $(this).css('border-color', 'red');
     //}
 }

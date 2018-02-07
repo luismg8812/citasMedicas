@@ -28,12 +28,13 @@ function crarPaciente() {
             emailPaciente: emailPaciente,
             fijoPaciente: fijoPaciente,
             celularPaciente: celularPaciente,
-            user: user.email
+            user: user.uid
         });
+
     } else {
         refEditarPaciente = null;
-        refPaciente = firebase.database().ref().child("pacientes/");
-        refPaciente.push({
+        refPaciente = firebase.database().ref("pacientes/"+identificacionPaciente);
+        refPaciente.set({
             nombrePaciente: nombrePaciente,
             fechaPaciente: fechaPaciente,
             sexoPaciente: sexoPaciente,
@@ -46,13 +47,26 @@ function crarPaciente() {
             emailPaciente: emailPaciente,
             fijoPaciente: fijoPaciente,
             celularPaciente: celularPaciente,
-            user: user.email
+            user: user.uid
+        });
+        var refHistoriasClinicas = firebase.database().ref("historiasClinicas/"+identificacionPaciente);
+        refHistoriasClinicas.set({
+            alcoholicas:' ',
+            alergias: ' ',
+            alimentacion:' ',
+            antecedentesFamiliares: ' ',
+            antecedentesSociales: ' ',
+            fuma:' ',
+            idPaciente:identificacionPaciente,
+            idProfecional: user.uid,
+            usoDrogas: ' '
         });
     }
     $("#crearPaciente").modal("hide");
 }
 
 function buscarPacientes() {
+    var user = firebase.auth().currentUser;
     //alert("entra a buscar pacientes");
     var identificacionBusquedaPaciente = document.getElementById("identificacionBusquedaPaciente").value;
     var refPaciente;
@@ -63,7 +77,8 @@ function buscarPacientes() {
         var resul = refPaciente.orderByChild("identificacionPaciente").equalTo(identificacionBusquedaPaciente).limitToFirst(1).on("value", function (snapshot) {
             var datos = snapshot.val();
             for (var key in datos) {
-                var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
+                if(user.uid!==datos[key].user){
+                    var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
                 var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
                 filasTablaPacientes += "<tr>" +
                     "<td>" + botonEdit + " </td>" +
@@ -73,6 +88,8 @@ function buscarPacientes() {
                     //"<td>" + datos[key].celularPaciente + "</td>" +
                     //"<td>" + datos[key].direccionPaciente + "</td>" +
                     "</tr>";
+                }
+                
             }
             tablaPacientes.innerHTML = filasTablaPacientes;    
         });
@@ -85,7 +102,7 @@ function buscarPacientes() {
         refPaciente.once("value", function (snap) {
             var datos = snap.val();
             for (var key in datos) {
-                if (datos[key].user == user.email) {
+                if (datos[key].user == user.uid) {
                     //alert(key);
                     var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
                     var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';

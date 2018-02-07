@@ -29,6 +29,12 @@ function opcionMenu(op) {
                 $('#opciones').load('pages/citas/citasDiaAuxiliar.html');
             });
             break;
+            case 'citaDiaDoctorOp':
+            $(document).ready(function () {
+                $('#opciones').load('pages/citas/citasDiaDoctor.html');
+            });
+            break;    
+            
         case 'profecionales':
             $(document).ready(function () {
                 $('#opciones').load('pages/usuarios/usuarios.html');
