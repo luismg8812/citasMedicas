@@ -8,41 +8,53 @@
 <form>
     <input type="hidden" id="idHistoriaClinica">
     <div class="form-group row">
-        <label for="generoPacienteHv" class="col-sm-2 col-form-label">Paciente: </label>
+        <label for="nombrePacienteHv" class="col-sm-2 col-form-label">Paciente: </label>
         <div class="col-sm-12 col-md-3">
-            <input readonly class="form-control-plaintext" id="generoPacienteHv" value="email@example.com">
+            <input readonly class="form-control-plaintext" id="nombrePacienteHv" value="">
         </div>
     </div>
     <div class="form-group row">
         <label for="identificacionPacienteHv" class="col-sm-2 col-form-label">Identificación: </label>
         <div class="col-sm-12 col-md-3">
-            <input readonly class="form-control-plaintext" id="identificacionPacienteHv" value="1061710433">
+            <input readonly class="form-control-plaintext" id="identificacionPacienteHv" value="">
         </div>
     </div>
     <div class="form-group row">
         <label for="generoPacienteHv" class="col-sm-2 col-form-label">Genero: </label>
         <div class="col-sm-12 col-md-3">
-            <input readonly class="form-control-plaintext" id="generoPacienteHv" value="Masculino">
+            <input readonly class="form-control-plaintext" id="generoPacienteHv" value="">
         </div>
     </div>
     <div class="form-group row">
-        <label for="generoPacienteHv" class="col-sm-2 col-form-label">Edad: </label>
+        <label for="edadPacienteHv" class="col-sm-2 col-form-label">Edad: </label>
         <div class="col-sm-12 col-md-3">
-            <input readonly class="form-control-plaintext" id="generoPacienteHv" value="29 ">
+            <input readonly class="form-control-plaintext" id="edadPacienteHv" value="">
         </div>
     </div>
     <div class="form-group row">
         <label for="motivoConsultaPacienteHv" class="col-sm-2 col-form-label">Motivo consulta: </label>
         <div class="col-sm-12 ">
-            <textarea class="form-control" id="motivoConsultaPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px"></textarea>
+            <textarea class="form-control" id="motivoConsultaPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
     <div class="form-group row">
         <label for="enfermedadActualPacienteHv" class="col-sm-2 col-form-label">Enfermedad Actual: </label>
         <div class="col-sm-12 ">
-            <textarea class="form-control" id="enfermedadActualPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px"></textarea>
+            <textarea class="form-control" id="enfermedadActualPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 200px;line-height:15px"></textarea>
         </div>
     </div>
+    <p>   
+        <button class="btn btn-primary" type="button" onclick="traeConsultas()" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Otras consultas
+        </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <div id="consultas">
+                
+            </div>
+        </div>
+      </div>
     <div class="row">
         <div class="col-md-1 mt-2">
             <label class="form-check-label mr-2" for="fumaPacienteHv">Fuma</label>
@@ -66,31 +78,31 @@
     <div class="form-group row mt-1">
         <label for="tipoAlimentacionPacienteHv" class="col-sm-2 col-form-label">Tipo Alimentación: </label>
         <div class="col-sm-12 ">
-            <textarea class="form-control" id="tipoAlimentacionPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px"></textarea>
+            <textarea class="form-control" id="tipoAlimentacionPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
     <div class="form-group row mt-1">
         <label for="medicamentosPacienteHv" class="col-sm-2 col-form-label">Medicamentos: </label>
         <div class="col-sm-12 ">
-            <textarea class="form-control" id="medicamentosPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px"></textarea>
+            <textarea class="form-control" id="medicamentosPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
     <div class="form-group row mt-1">
         <label for="alergiasPacienteHv" class="col-sm-2 col-form-label">Alergias: </label>
         <div class="col-sm-12 ">
-            <textarea class="form-control" id="alergiasPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px"></textarea>
+            <textarea class="form-control" id="alergiasPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
     <div class="form-group row mt-1">
         <label for="socialesPacienteHv" class="col-sm-2 col-form-label">Antecedentes sociales y personales: </label>
         <div class="col-sm-12 ">
-            <textarea class="form-control" id="socialesPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px"></textarea>
+            <textarea class="form-control" id="socialesPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
     <div class="form-group row mt-1">
         <label for="familiaresPacienteHv" class="col-sm-2 col-form-label">Antecedentes Familiares: </label>
         <div class="col-sm-12 ">
-            <textarea class="form-control" id="familiaresPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px"></textarea>
+            <textarea class="form-control" id="familiaresPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
     <button type="button" onclick="guardarHistoriaClinica()" class="btn btn-primary">Guardar</button>

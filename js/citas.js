@@ -98,7 +98,7 @@ function cargarCitas() {
                 // var diaCita = document.getElementById("dia").value;
                 // var inicioCita = document.getElementById("inicio").value;
                 // var finCita = document.getElementById("fin").value;
-              
+
                 switch (view.name) {
                     case 'month':
                         $(this).css('background-color', 'red');
@@ -174,7 +174,7 @@ function buscarcitasPaciente() {
         var datos = snapshot.val();
         for (var key in datos) {
             // if(){
-                
+
             // }
             var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
             var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-trash\" aria-hidden=\"true\" ></i> </button>';
@@ -221,6 +221,19 @@ function selectPacienteCita(paciente) {
     //alert(nombrePaciente);
 }
 
+function calcularEdad(fecha) {
+    var hoy = new Date();
+    var cumpleanos = new Date(fecha);
+    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
+
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+        edad--;
+    }
+
+    return edad;
+}
+
 function cargarCitasDiaDoctor() {
     var user = firebase.auth().currentUser;
     var refCitas = firebase.database().ref().child("eventos/");
@@ -242,21 +255,34 @@ function cargarCitasDiaDoctor() {
             eventClick: function (calEvent, jsEvent, view) {
                 $(document).ready(function () {
                     $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
-                    
-                    var datos1;
-                    var refHistoriasClinicas = firebase.database().ref("historiasClinicas/"+calEvent.idPaciente).once('value').then(function(snapshot1){
-                        datos1 = snapshot1.val();
-                         alert("aqui llega1:"+refHistoriasClinicas );
-                         for (var key1 in datos1) {
-                            // ver como se utilizan los documentos anidados, como se crean y como se hacen consultas
-                             //aqui llena los datos de la historia clinica
-                             //document.getElementById("usadrogas").value=datos1[key1].usadrogas;
-                             //hay que recorrer las consultas para imprimirlas
-                             //<div id="consultas"></div>, reemplazar ese div con las consultas encontradas;
-                             alert("paciente:" + datos1[key1]);
-                         }
+
+                    var generoPaciente = "";
+                    var edadPacienteHv = "";
+                    var refPaciente = firebase.database().ref("pacientes/" + calEvent.idPaciente).once('value').then(function (sn) {
+                        var dato = sn.val();
+                        edadPacienteHv = dato['fechaPaciente']
+                        generoPaciente = dato['sexoPaciente'];
+
                     });
-                   
+
+                    var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + calEvent.idPaciente).once('value').then(function (snapshot1) {
+                        var datos1 = snapshot1.val();
+                        //
+                        $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
+                        $("#nombrePacienteHv").val(calEvent.title);
+                        $("#identificacionPacienteHv").val(calEvent.idPaciente);
+                        $("#generoPacienteHv").val(generoPaciente);
+                        $("#motivoConsultaPacienteHv").val(calEvent.motivo);
+                        document.getElementById("idHistoriaClinica").value = calEvent.idPaciente;
+                        // ver como se utilizan los documentos anidados, como se crean y como se hacen consultas
+                        //aqui llena los datos de la historia clinica
+                        //document.getElementById("usadrogas").value=datos1[key1].usadrogas;
+                        //hay que recorrer las consultas para imprimirlas
+
+
+
+                    });
+
 
                     //falta hacer la parte que cargue la historia clinica, ver como haceer
                     //que cargue la hv y si no existe que la cree.... todo eso aqui adentro 
