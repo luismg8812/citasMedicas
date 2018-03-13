@@ -1,5 +1,14 @@
 function guardarHistoriaClinica() {
-    alert("entra a guardar historia clinica");
+   
+   // $('.fumaPacienteHv').prop('checked', datos1[key1].fuma);
+   // $('.alcoholPacienteHv').prop('checked', datos1[key1].alcoholicas);
+   // $('.usoDrogasPacienteHv').prop('checked', datos1[key1].usadrogas);
+    $("#tipoAlimentacionPacienteHv").val();
+    $("#medicamentosPacienteHv").val();
+    $("#alergiasPacienteHv").val();
+    $("#socialesPacienteHv").val();
+    $("#familiaresPacienteHv").val();
+    //alert($("#medicamentosPacienteHv").val());
 }
 
 function traeConsultas() {

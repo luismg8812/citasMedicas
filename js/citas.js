@@ -274,6 +274,15 @@ function cargarCitasDiaDoctor() {
                         $("#generoPacienteHv").val(generoPaciente);
                         $("#motivoConsultaPacienteHv").val(calEvent.motivo);
                         document.getElementById("idHistoriaClinica").value = calEvent.idPaciente;
+                        $('.fumaPacienteHv').prop('checked', datos1[key1].fuma);
+                        $('.alcoholPacienteHv').prop('checked', datos1[key1].alcoholicas);
+                        $('.usoDrogasPacienteHv').prop('checked', datos1[key1].usadrogas);
+                        $("#tipoAlimentacionPacienteHv").val(datos1[key1].alimentacion);
+                        $("#medicamentosPacienteHv").val(datos1[key1].medicamentos);
+                        $("#alergiasPacienteHv").val(datos1[key1].alergias);
+                        $("#socialesPacienteHv").val(datos1[key1].antecedentesSociales);
+                        $("#familiaresPacienteHv").val(datos1[key1].antecedentesFamiliares);
+                        
                         // ver como se utilizan los documentos anidados, como se crean y como se hacen consultas
                         //aqui llena los datos de la historia clinica
                         //document.getElementById("usadrogas").value=datos1[key1].usadrogas;
