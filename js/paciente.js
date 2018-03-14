@@ -2,7 +2,11 @@
 var refEditarPaciente;
 function crarPaciente() {
     var user = firebase.auth().currentUser;
-    var nombrePaciente = document.getElementById('nombrePaciente').value;
+    var primerNombrePaciente = document.getElementById('primerNombrePaciente').value;
+    var segundoNombrePaciente = document.getElementById('segundoNombrePaciente').value;
+    var primerApellidoPaciente = document.getElementById('primerApellidoPaciente').value;
+    var segundoApellidoPaciente = document.getElementById('segundoApellidoPaciente').value;
+    var barrioPaciente = document.getElementById('barrioPaciente').value;  
     var fechaPaciente = document.getElementById('fechaPaciente').value;
     var sexoPaciente = document.getElementById('sexoPaciente').value;
     var estadoCivilPaciente = document.getElementById('estadoCivilPaciente').value;

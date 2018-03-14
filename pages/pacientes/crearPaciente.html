@@ -3,8 +3,28 @@
 <form id="crearPacientesForm" onsubmit="crarPaciente()">
   <div class="form-row">
     <div class="col-md-6 ">
-      <label for="nombrePaciente">* Nombre Completo</label>
-      <input class="form-control" id="nombrePaciente" placeholder="Nombre del paciente" required>
+      <label for="primerNombrePaciente">* Primer Nombre</label>
+      <input class="form-control" id="primerNombrePaciente" placeholder="Primer Nombre del paciente" required>
+    </div>
+    <div class="col-md-6 ">
+      <label for="segundoNombrePaciente"> Segundo Nombre</label>
+      <input class="form-control" id="segundoNombrePaciente" placeholder="Segundo Nombre del paciente" >
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="primerApellidoPaciente">* Primer Apellido</label>
+      <input class="form-control" id="primerApellidoPaciente" placeholder="Primer Apellido del paciente" required>
+    </div>
+    <div class="col-md-6 ">
+      <label for="segundoApellidoPaciente"> Segundo Apellido</label>
+      <input class="form-control" id="segundoApellidoPaciente" placeholder="Segundo Apellido del paciente" >
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="emailPaciente">Email</label>
+      <input id="emailPaciente" class="form-control" type="email" placeholder="Email" >
     </div>
     <div class="col-md-6 ">
       <label for="fechaPaciente">* Fecha de nacimiento</label>
@@ -29,7 +49,6 @@
         <option value="c">Casado/a</option>
         <option value="v">Viudo/a</option>
         <option value="d">Divorciado/a</option>
-        <option value="a">Amantes</option>
       </select>
     </div>
   </div>
@@ -51,16 +70,18 @@
       <select class="custom-select form-control" id="tipoIdentificacionPaciente" required>
         <option selected>Seleccione</option>
         <option value="cc">Cédula de Ciudadanía</option>
-        <option value="ti">Targeta de identidad</option>
+        <option value="ti">Tarjeta de identidad</option>
         <option value="rc">Registro Civil</option>
         <option value="ce">Cédula de Extranjería</option>
+        <option value="pa">Pasaporte</option>
+        <option value="ca">Carné Diplomático</option>
       </select>
     </div>
   </div>
   <div class="form-row">
     <div class="col-md-6 ">
       <label for="identificacionPaciente">* Identificación</label>
-      <input class="form-control" type="number" id="identificacionPaciente" placeholder="Identificación" required>
+      <input class="form-control" id="identificacionPaciente" placeholder="Identificación" required>
     </div>
     <div class="col-md-6 ">
       <label for="religionPaciente">Religión</label>
@@ -73,18 +94,18 @@
       <input class="form-control" id="direccionPaciente" placeholder="direccionPaciente" required>
     </div>
     <div class="col-md-6 ">
-      <label for="emailPaciente">Email</label>
-      <input id="emailPaciente" class="form-control" type="email" placeholder="Email" >
+      <label for="barrioPaciente">Barrio</label>
+      <input id="barrioPaciente" class="form-control"  placeholder="Barrio" >
     </div>
   </div>
   <div class="form-row">
     <div class="col-md-6 ">
       <label for="fijoPaciente">Fijo</label>
-      <input class="form-control"  type="number" id="fijoPaciente" placeholder="Fijo">
+      <input class="form-control"   id="fijoPaciente" placeholder="Fijo">
     </div>
     <div class="col-md-6 ">
       <label for="celularPaciente">Celular</label>
-      <input id="celularPaciente" type="number" class="form-control" placeholder="Celular" required>
+      <input id="celularPaciente" class="form-control" placeholder="Celular" required>
     </div>
   </div>
   <div class="modal-footer">
