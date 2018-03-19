@@ -1,21 +1,43 @@
 function guardarHistoriaClinica() {
    
-   // $('.fumaPacienteHv').prop('checked', datos1[key1].fuma);
-   // $('.alcoholPacienteHv').prop('checked', datos1[key1].alcoholicas);
-   // $('.usoDrogasPacienteHv').prop('checked', datos1[key1].usadrogas);
+    $('#fumaPacienteHv').prop('checked');
+    $('#alcoholPacienteHv').prop('checked');
+    $('#usoDrogasPacienteHv').prop('checked');
     $("#tipoAlimentacionPacienteHv").val();
     $("#medicamentosPacienteHv").val();
     $("#alergiasPacienteHv").val();
     $("#socialesPacienteHv").val();
     $("#familiaresPacienteHv").val();
-    //alert($("#medicamentosPacienteHv").val());
+    $("#identificacionPacienteHv").val();
+    //alert($("#identificacionPacienteHv").val());
+    var m = moment().format();
+    //alert(m);
+    var refHistoriasClinicas = firebase.database().ref("historiasClinicas/"+$("#identificacionPacienteHv").val());
+        refHistoriasClinicas.update({
+            alcoholicas:$('#alcoholPacienteHv').prop('checked'),
+            alergias: $("#alergiasPacienteHv").val(),
+            alimentacion:$("#tipoAlimentacionPacienteHv").val(),
+            antecedentesFamiliares: $("#familiaresPacienteHv").val(),
+            antecedentesSociales:$("#socialesPacienteHv").val(),
+            fuma:$('#fumaPacienteHv').prop('checked'),
+            usoDrogas: $('#usoDrogasPacienteHv').prop('checked')
+        });
+        var refConsultas = firebase.database().ref("consultas/");
+        refConsultas.push({
+            evolucion: $("#enfermedadActualPacienteHv").val(),
+            fecha:m,
+            identificacionPaciente:$("#identificacionPacienteHv").val(),
+            motivoConsulta:$("#motivoConsultaPacienteHv").val()
+
+        });
+   
 }
 
 function traeConsultas() {
     var filasConsultas = "";
     var identificacionBusquedaPaciente = document.getElementById("idHistoriaClinica").value;
     var refConsulta = firebase.database().ref().child("consultas/");
-    var resul = refConsulta.orderByChild("identificacionPaciente").equalTo(Number(identificacionBusquedaPaciente)).on("value", function (snapshot) {
+    var resul = refConsulta.orderByChild("identificacionPaciente").equalTo(identificacionBusquedaPaciente).on("value", function (snapshot) {
         var datos = snapshot.val();
         var numConsultas = 0;
         for (var key in datos) {

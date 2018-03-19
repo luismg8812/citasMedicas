@@ -20,7 +20,11 @@ function crarPaciente() {
     var celularPaciente = document.getElementById('celularPaciente').value;
     if (refEditarPaciente != null) {
         refEditarPaciente.set({
-            nombrePaciente: nombrePaciente,
+            primerNombrePaciente: primerNombrePaciente,
+            segundoNombrePaciente: segundoNombrePaciente,
+            primerApellidoPaciente: primerApellidoPaciente,
+            segundoApellidoPaciente: segundoApellidoPaciente,
+            barrioPaciente: barrioPaciente,
             fechaPaciente: fechaPaciente,
             sexoPaciente: sexoPaciente,
             estadoCivilPaciente: estadoCivilPaciente,
@@ -34,12 +38,15 @@ function crarPaciente() {
             celularPaciente: celularPaciente,
             user: user.uid
         });
-
     } else {
         refEditarPaciente = null;
         refPaciente = firebase.database().ref("pacientes/"+identificacionPaciente);
         refPaciente.set({
-            nombrePaciente: nombrePaciente,
+            primerNombrePaciente: primerNombrePaciente,
+            segundoNombrePaciente: segundoNombrePaciente,
+            primerApellidoPaciente: primerApellidoPaciente,
+            segundoApellidoPaciente: segundoApellidoPaciente,
+            barrioPaciente: barrioPaciente,
             fechaPaciente: fechaPaciente,
             sexoPaciente: sexoPaciente,
             estadoCivilPaciente: estadoCivilPaciente,
@@ -55,12 +62,12 @@ function crarPaciente() {
         });
         var refHistoriasClinicas = firebase.database().ref("historiasClinicas/"+identificacionPaciente);
         refHistoriasClinicas.set({
-            alcoholicas:' ',
-            alergias: ' ',
+            alcoholicas:false,
+            alergias: false,
             alimentacion:' ',
             antecedentesFamiliares: ' ',
             antecedentesSociales: ' ',
-            fuma:' ',
+            fuma:false,
             idPaciente:identificacionPaciente,
             idProfecional: user.uid,
             usoDrogas: ' '
@@ -72,35 +79,14 @@ function crarPaciente() {
 function buscarPacientes() {
     var user = firebase.auth().currentUser;
     //alert("entra a buscar pacientes");
-    var identificacionBusquedaPaciente = document.getElementById("identificacionBusquedaPaciente").value;
+    
     var refPaciente;
     var filasTablaPacientes = "";
-    if (identificacionBusquedaPaciente != '') {
-        var tablaPacientes = document.getElementById("tablaPacientes");
+    
         refPaciente = firebase.database().ref().child("pacientes/");
-        var resul = refPaciente.orderByChild("identificacionPaciente").equalTo(identificacionBusquedaPaciente).limitToFirst(1).on("value", function (snapshot) {
-            var datos = snapshot.val();
-            for (var key in datos) {
-                if(user.uid!==datos[key].user){
-                    var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
-                var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
-                filasTablaPacientes += "<tr>" +
-                    "<td>" + botonEdit + " </td>" +
-                    "<td>" + datos[key].nombrePaciente + "</td>" +
-                    "<td>" + datos[key].identificacionPaciente + "</td>" +
-                    //"<td>" + datos[key].sexoPaciente + "</td>" +
-                    //"<td>" + datos[key].celularPaciente + "</td>" +
-                    //"<td>" + datos[key].direccionPaciente + "</td>" +
-                    "</tr>";
-                }
-                
-            }
-            tablaPacientes.innerHTML = filasTablaPacientes;    
-        });
-
-    } else {
-        refPaciente = firebase.database().ref().child("pacientes/");
-        var tablaPacientes = document.getElementById("tablaPacientes");
+       
+        var table = $('#tablePacientesJquery').DataTable();
+        
         filasTablaPacientes = "";
         var user = firebase.auth().currentUser;
         refPaciente.once("value", function (snap) {
@@ -108,24 +94,23 @@ function buscarPacientes() {
             for (var key in datos) {
                 if (datos[key].user == user.uid) {
                     //alert(key);
+                    var data =[];
                     var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
                     var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
                     //alert(botonEdit);
-                    filasTablaPacientes += "<tr>" +
-                        "<td>" + botonEdit + " </td>" +
-                        "<td>" + datos[key].nombrePaciente + "</td>" +
-                        "<td>" + datos[key].identificacionPaciente + "</td>" +
-                        //"<td>" + datos[key].sexoPaciente + "</td>" +
-                        //"<td>" + datos[key].celularPaciente + "</td>" +
-                        //"<td>" + datos[key].direccionPaciente + "</td>" +
-                        "</tr>";
-                    //alert(datos[key].nombrePaciente);
+                    data.push(  botonEdit);
+                    data.push( datos[key].primerNombrePaciente+' '+datos[key].primerApellidoPaciente);
+                    data.push( datos[key].identificacionPaciente);
+                  
+                        table.row.add(data ).draw();
                 }
 
             }
-            tablaPacientes.innerHTML = filasTablaPacientes;
+            
+           
+           // tablaPacientes.innerHTML = filasTablaPacientes;
         });
-    }
+    
 
 }
 
@@ -134,7 +119,11 @@ function editarPaciente(btn) {
     refEditarPaciente = firebase.database().ref("pacientes/" + editar);
     refEditarPaciente.once('value').then(function (snap) {
         $("#crearPaciente").modal("show");
-        document.getElementById('nombrePaciente').value = snap.val().nombrePaciente;
+        document.getElementById('primerNombrePaciente').value = snap.val().primerNombrePaciente;
+        document.getElementById('segundoNombrePaciente').value = snap.val().segundoNombrePaciente;
+        document.getElementById('primerApellidoPaciente').value = snap.val().primerApellidoPaciente;
+        document.getElementById('segundoApellidoPaciente').value = snap.val().segundoApellidoPaciente;
+        document.getElementById('barrioPaciente').value = snap.val().barrioPaciente;
         document.getElementById('sexoPaciente').value = snap.val().sexoPaciente;
         document.getElementById('estadoCivilPaciente').value = snap.val().estadoCivilPaciente;
         document.getElementById('EscolaridadPaciente').value = snap.val().EscolaridadPaciente;

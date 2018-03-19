@@ -1,6 +1,5 @@
 function crearCita() {
-    var identificacionPaciente = document.getElementById("pacienteSelect").getAttribute("key");
-    var nombrePaciente = document.getElementById("pacienteSelect").getAttribute("nombre");
+    var identificacionPaciente = document.getElementById("pacienteId").value;
     var diaCita = document.getElementById("dia").value;
     var inicioCita = document.getElementById("inicio").value;
     var finCita = document.getElementById("fin").value;
@@ -23,7 +22,7 @@ function crearCita() {
         idProfecional: user.uid,
         idPaciente: identificacionPaciente,
         start: diaCita + " " + inicioCita,
-        title: nombrePaciente,
+        title: 'Cita para: ' + identificacionPaciente,
         motivo: motivoCita,
         id: idEvento,
         confirmada: false,
@@ -91,14 +90,6 @@ function cargarCitas() {
 
             },
             dayClick: function (date, jsEvent, view) {
-                // alert('Clicked on: ' + date.format());
-                //  alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                // alert('Current view: ' + view.name);
-                // change the day's background color just for fun
-                // var diaCita = document.getElementById("dia").value;
-                // var inicioCita = document.getElementById("inicio").value;
-                // var finCita = document.getElementById("fin").value;
-
                 switch (view.name) {
                     case 'month':
                         $(this).css('background-color', 'red');
@@ -109,14 +100,33 @@ function cargarCitas() {
                         break;
                 }
                 $("#crearCitaModal").modal("show");
+                var user = firebase.auth().currentUser;
+                var refPaciente = firebase.database().ref().child("pacientes/");
+                var filasTablaPacientes = ' ';
+                refPaciente.once("value", function (snap) {
+                    var datos = snap.val();
+                    for (var key in datos) {
+                        if (datos[key].user == user.uid) {
+                            var nombre = datos[key].primerNombrePaciente + ' ' + datos[key].primerApellidoPaciente;
+                            filasTablaPacientes = filasTablaPacientes + '  <option value="' + datos[key].identificacionPaciente + '">' + nombre + '</option>';
+                        }
+                    }
+                    document.getElementById("browsers").innerHTML = filasTablaPacientes;
+                });
+
+                var res = date.format().split("T");
+                document.getElementById("dia").value = res[0];
+                document.getElementById("pacienteId").value = "";
+                document.getElementById("inicio").value = "";
+                document.getElementById("fin").value = "";
+                document.getElementById("textNuevaCitaPaciete").value = "";
                 document.getElementById("idEvento").value = "";
             },
             eventClick: function (calEvent, jsEvent, view) {
                 $("#crearCitaModal").modal("show");
                 document.getElementById("idEvento").value = calEvent.id;
-                document.getElementById("pacienteSelect").setAttribute("key", calEvent.idPaciente);
-                document.getElementById("pacienteSelect").setAttribute("nombre", calEvent.title);
-                document.getElementById("pacienteSelect").innerHTML = calEvent.title;
+                document.getElementById("pacienteId").value = calEvent.idPaciente;
+                // document.getElementById("pacienteSelect").innerHTML = calEvent.title;
                 document.getElementById("textNuevaCitaPaciete").value = calEvent.motivo;
                 var res = calEvent.start.format().split("T");
                 var fin = calEvent.end.format().split("T");
@@ -146,10 +156,6 @@ function cargarCitas() {
 
                         break;
                 }
-                //alert('Event: ' + calEvent.idPaciente);
-                //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                //alert('View: ' + view.name);
-                // change the border color just for fun
                 $(this).css('border-color', 'red');
 
             },
@@ -267,29 +273,20 @@ function cargarCitasDiaDoctor() {
 
                     var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + calEvent.idPaciente).once('value').then(function (snapshot1) {
                         var datos1 = snapshot1.val();
-                        //
                         $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
-                        $("#nombrePacienteHv").val(calEvent.title);
+                        $("#nombrePacienteHv").val(datos1['primerNombrePaciente']);
                         $("#identificacionPacienteHv").val(calEvent.idPaciente);
                         $("#generoPacienteHv").val(generoPaciente);
                         $("#motivoConsultaPacienteHv").val(calEvent.motivo);
                         document.getElementById("idHistoriaClinica").value = calEvent.idPaciente;
-                        $('.fumaPacienteHv').prop('checked', datos1[key1].fuma);
-                        $('.alcoholPacienteHv').prop('checked', datos1[key1].alcoholicas);
-                        $('.usoDrogasPacienteHv').prop('checked', datos1[key1].usadrogas);
-                        $("#tipoAlimentacionPacienteHv").val(datos1[key1].alimentacion);
-                        $("#medicamentosPacienteHv").val(datos1[key1].medicamentos);
-                        $("#alergiasPacienteHv").val(datos1[key1].alergias);
-                        $("#socialesPacienteHv").val(datos1[key1].antecedentesSociales);
-                        $("#familiaresPacienteHv").val(datos1[key1].antecedentesFamiliares);
-                        
-                        // ver como se utilizan los documentos anidados, como se crean y como se hacen consultas
-                        //aqui llena los datos de la historia clinica
-                        //document.getElementById("usadrogas").value=datos1[key1].usadrogas;
-                        //hay que recorrer las consultas para imprimirlas
-
-
-
+                        $('#fumaPacienteHv').prop('checked', datos1['fuma']);
+                        $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
+                        $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
+                        $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
+                        $("#medicamentosPacienteHv").val(datos1['medicamentos']);
+                        $("#alergiasPacienteHv").val(datos1['alergias']);
+                        $("#socialesPacienteHv").val(datos1['antecedentesSociales']);
+                        $("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
                     });
 
 

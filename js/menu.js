@@ -3,7 +3,7 @@ function opcionMenu(op) {
     switch (key) {
         case 'pacientes':
             $(document).ready(function () {
-                $('#opciones').load('pages/pacientes/pacientes.html');
+                $('#opciones').load('pages/pacientes/pacientes.html');           
             });
 
             break;

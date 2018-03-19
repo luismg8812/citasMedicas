@@ -1,34 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <form id="crearPacientesForm" onsubmit="crearCita()">
-
-    <div class="input-group mb-2">
-        <input class="form-control" id="pacienteId" placeholder="Buscar por nombre o identificación">
-        <div class="input-group-btn">
-            <button class="btn btn-default" type="button" onclick="buscarPacienteCita()">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-md-12 ">
-            <div class="list-group list-group-sm" id="tablaPacientesCita">
-
-            </div>
-        </div>
-    </div>
+    
     <div class="form-inline  mb-2">
         <div class="form-group">
-            <label for="pacienteSelect" class="mr-1">Paciente: </label>
-            <div id="pacienteSelect"></div>
-
+            <label for="pacienteId" class="mr-1">Paciente: </label>
+            <input list="browsers" name="browser" class="form-control" id="pacienteId" required>
+            <datalist id="browsers">
+            </datalist>
         </div>
     </div>
     <div class="form-inline mb-2">
-
         <input id="dia" class="form-control" placeholder="Día de la cita" required>
     </div>
-    <div class="form-inline mt}b-2">
+    <div class="form-inline mb-2">
         <!-- <p class="ml-2 mr-2">Desde </p> -->
         <input id="inicio" class="form-control mr-2 mb-2" placeholder="Desde" required>
         <!-- <p class="ml-2 mr-2">hasta</p> -->
@@ -101,10 +86,12 @@
     </script>
     <div class="form-row">
         <div class="col-md-12 ">
-                <textarea class="form-control" id="textNuevaCitaPaciete" placeholder="Motivo o Comentarios" rows="3"></textarea>
+                <textarea class="form-control" id="textNuevaCitaPaciete"
+                placeholder="Motivo o Comentarios" rows="3" 
+                style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
-    <input id="idEvento"  type="hidden" >
+    <input id="idEvento" type="hidden">
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         <button class="btn btn-primary" type="sutmit">Crear Cita</button>
