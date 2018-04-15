@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<form id="crearDoctoresForm" onsubmit="crearDoctor()">
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="primerNombreDoctor">* Primer Nombre</label>
+      <input class="form-control" id="primerNombreDoctor" placeholder="Primer Nombre del Doctor" required>
+    </div>
+    <div class="col-md-6 ">
+      <label for="segundoNombreDoctor"> Segundo Nombre</label>
+      <input class="form-control" id="segundoNombreDoctor" placeholder="Segundo Nombre del doctor">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="primerApellidoDoctor">* Primer Apellido</label>
+      <input class="form-control" id="primerApellidoDoctor" placeholder="Primer Apellido del doctor" required>
+    </div>
+    <div class="col-md-6 ">
+      <label for="segundoApellidoDoctor"> Segundo Apellido</label>
+      <input class="form-control" id="segundoApellidoDoctor" placeholder="Segundo Apellido del doctor">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="emailDoctor">Email</label>
+      <input id="emailDoctor" class="form-control" type="email" placeholder="Email">
+    </div>
+    <div class="col-md-6 ">
+      <label for="especialidadDoctor">Especialidad</label>
+      <select class="custom-select form-control" id="especialidadDoctor">
+        <option selected>Seleccione</option>
+        <option value="cardiologo">Cardiólogia</option>
+        <option value="Odontologo">Odontólogia</option>
+        <option value="endocrinologia">Endocrinologia</option>
+        <option value="endocrinologia">Fisioterapia</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="identificacionDoctor">* Identificación</label>
+      <input class="form-control" id="identificacionDoctor" placeholder="Identificación" required>
+    </div>
+    <div class="col-md-6 ">
+      <label for="tipoIdentificacionDoctor">* Tipo Identificación</label>
+      <select class="custom-select form-control" id="tipoIdentificacionDoctor" required>
+        <option selected>Seleccione</option>
+        <option value="cc">Cédula de Ciudadanía</option>
+        <option value="ti">Tarjeta de identidad</option>
+        <option value="rc">Registro Civil</option>
+        <option value="ce">Cédula de Extranjería</option>
+        <option value="pa">Pasaporte</option>
+        <option value="ca">Carné Diplomático</option>
+      </select>
+    </div>
+  </div>
+
+
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="fijoDoctor">Fijo</label>
+      <input class="form-control" id="fijoDoctor" placeholder="Fijo">
+    </div>
+    <div class="col-md-6 ">
+      <label for="celularDoctor">Celular</label>
+      <input id="celularDoctor" class="form-control" placeholder="Celular" required>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-6 ">
+      <label for="direccionDoctor">Dirección</label>
+      <input id="registroMedicoDoctor" class="form-control" placeholder="Dirección">
+    </div>
+    <div class="col-md-6 ">
+      <label for="registroMedicoDoctor">Registro Medico</label>
+      <input id="registroMedicoDoctor" class="form-control" placeholder="Registro Medico">
+    </div>
+
+
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+    <button class="btn btn-primary" type="sutmit">Guardar</button>
+  </div>
+</form>
+
+</html>

@@ -7,6 +7,12 @@ function opcionMenu(op) {
             });
 
             break;
+            case 'doctores':
+            $(document).ready(function () {
+                $('#opciones').load('pages/doctores/doctores.html');           
+            });
+
+            break;
 
         case 'agregarCita':
             $(document).ready(function () {
