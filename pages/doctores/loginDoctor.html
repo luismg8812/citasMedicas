@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<div class="row">
+    <div class="col-md-1 mb-3">
+        <button type="button" style="display: none" class="btn btn-primary" data-toggle="modal" id="btnLoginDoctorModal" data-target="#loginDoctorModal">Login</button>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="loginDoctorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Login Doctor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <script> 
+                   // $(document).ready(function () {
+                    //    $("#crearDoctorModal").load("pages/doctores/crearDoctor.html");
+                  //  });
+                </script>
+                <div id="crearDoctorModal"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+     $(document).ready(function () {
+                document.getElementById('btnLoginDoctorModal').click();              
+            });
+</script>
+</html>

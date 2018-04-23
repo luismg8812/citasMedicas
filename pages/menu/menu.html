@@ -18,11 +18,16 @@
                                                 <span class="sr-only">(current)</span>
                                         </a>
                                 </li>
-                                <li class="nav-item active">
-                                        <a class="nav-link" href="#" id="doctores" onclick="opcionMenu(this)">Doctores
-                                                <span class="sr-only">(current)</span>
-                                        </a>
-                                </li>
+                                <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuDoctoresLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Admin Doctores
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuDoctoresLink">
+                                                        <a class="dropdown-item" href="#" onclick="opcionMenu(this)" id="doctores">Doctores</a>
+                                                        <a class="dropdown-item" href="#" onclick="opcionMenu(this)" id="loginDoctor">Login Doctor</a>
+                                                </div>
+                                        </li>
+                               
                                 <li class="nav-item">
                                         <a class="nav-link" href="#" onclick="opcionMenu(this)" id="profecionales">Modificar Cuenta</a>
                                 </li>

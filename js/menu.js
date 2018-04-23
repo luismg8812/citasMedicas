@@ -3,13 +3,13 @@ function opcionMenu(op) {
     switch (key) {
         case 'pacientes':
             $(document).ready(function () {
-                $('#opciones').load('pages/pacientes/pacientes.html');           
+                $('#opciones').load('pages/pacientes/pacientes.html');
             });
 
             break;
-            case 'doctores':
+        case 'doctores':
             $(document).ready(function () {
-                $('#opciones').load('pages/doctores/doctores.html');           
+                $('#opciones').load('pages/doctores/doctores.html');
             });
 
             break;
@@ -35,19 +35,25 @@ function opcionMenu(op) {
                 $('#opciones').load('pages/citas/citasDiaAuxiliar.html');
             });
             break;
-            case 'citaDiaDoctorOp':
+        case 'citaDiaDoctorOp':
             $(document).ready(function () {
                 $('#opciones').load('pages/citas/citasDiaDoctor.html');
             });
-            break;    
-            
+            break;
+
         case 'profecionales':
             $(document).ready(function () {
                 $('#opciones').load('pages/usuarios/usuarios.html');
                 cargarCamposProfecional();//foncion dentro del js de usuarios
             });
             break;
-
+            case 'loginDoctor':
+            $(document).ready(function () {
+                $('#opciones').load('pages/doctores/loginDoctor.html');
+                //document.getElementById('btnLoginDoctorModal').click();              
+            });
+            break;   
+            
         default:
             $(document).ready(function () {
                 $('#opciones').load('construccion.html');

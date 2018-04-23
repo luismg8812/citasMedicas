@@ -19,7 +19,7 @@ function buscarDoctores() {
                 var botonVer = ' <button type="button" key="' + key + '" onclick="editarDoctor(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
                 //alert(botonEdit);
                 data.push(botonEdit);
-                data.push(datos[key].primerNombreDoctor + ' ' + datos[key].primerApellidoctor);
+                data.push(datos[key].primerNombreDoctor + ' ' + datos[key].primerApellidoDoctor);
                 data.push(datos[key].identificacionDoctor);
                 tableDoctores.row.add(data).draw();
             }
@@ -43,6 +43,7 @@ function crearDoctor() {
     var emailDoctor = document.getElementById('emailDoctor').value;
     var fijoDoctor = document.getElementById('fijoDoctor').value;
     var celularDoctor = document.getElementById('celularDoctor').value;
+    var registroMedicoDoctor = document.getElementById('registroMedicoDoctor').value;
     if (refEditarDoctor != null) {
         refEditarDoctor.set({
             primerNombreDoctor: primerNombreDoctor,
@@ -56,6 +57,7 @@ function crearDoctor() {
             emailDoctor: emailDoctor,
             fijoDoctor: fijoDoctor,
             celularDoctor: celularDoctor,
+            registroMedicoDoctor:registroMedicoDoctor,            
             user: user.uid
         });
     } else {
@@ -73,8 +75,30 @@ function crearDoctor() {
             emailDoctor: emailDoctor,
             fijoDoctor: fijoDoctor,
             celularDoctor: celularDoctor,
+            registroMedicoDoctor:registroMedicoDoctor,   
             user: user.uid
         });
     }
     $("#crearDoctor").modal("hide");
+}
+
+function editarDoctor(btn) {
+    var editar = btn.getAttribute("key");
+    refEditarDoctor = firebase.database().ref("doctores/" + editar);
+    refEditarDoctor.once('value').then(function (snap) {
+        $("#crearDoctor").modal("show");
+        document.getElementById('primerNombreDoctor').value = snap.val().primerNombreDoctor;
+        document.getElementById('segundoNombreDoctor').value = snap.val().segundoNombreDoctor;
+        document.getElementById('primerApellidoDoctor').value = snap.val().primerApellidoDoctor;
+        document.getElementById('segundoApellidoDoctor').value = snap.val().segundoApellidoDoctor;
+        document.getElementById('especialidadDoctor').value = snap.val().especialidadDoctor;
+        document.getElementById('tipoIdentificacionDoctor').value = snap.val().tipoIdentificacionDoctor;
+        document.getElementById('identificacionDoctor').value = snap.val().identificacionDoctor;
+        document.getElementById('direccionDoctor').value = snap.val().direccionDoctor;
+        document.getElementById('emailDoctor').value = snap.val().emailDoctor;
+        document.getElementById('fijoDoctor').value = snap.val().fijoDoctor;
+        document.getElementById('celularDoctor').value = snap.val().celularDoctor; 
+        document.getElementById('registroMedicoDoctor').value = snap.val().registroMedicoDoctor;      
+        //alert(result);
+    });
 }
