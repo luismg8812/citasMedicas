@@ -2,11 +2,12 @@
 <html lang="en">
 
 
-<div class="row">
-    <div class="col-md-1 mb-3">
-        <button type="button" style="display: none" class="btn btn-primary" data-toggle="modal" id="btnLoginDoctorModal" data-target="#loginDoctorModal">Login</button>
-    </div>
-</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" id="btnLoginDoctorModal" data-target="#loginDoctorModal"
+    style="display: none">
+</button>
+
 <!-- Modal -->
 <div class="modal fade" id="loginDoctorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -17,20 +18,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body ">
-                <script> 
-                   // $(document).ready(function () {
-                    //    $("#crearDoctorModal").load("pages/doctores/crearDoctor.html");
-                  //  });
-                </script>
-                <div id="crearDoctorModal"></div>
+            <div class="modal-body">
+                <div class="form-inline">
+                        <input class="form-control mr-1" id="emailLoginDoctor" type="email" placeholder="Correo electronico" />
+                        <input class="form-control mr-sm-2" id="passwordLoginDoctor" type="password"  />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="loginDoctor()">Login</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>             
             </div>
         </div>
     </div>
 </div>
+
+
 <script>
-     $(document).ready(function () {
-                document.getElementById('btnLoginDoctorModal').click();              
-            });
+    $(document).ready(function () {
+        document.getElementById('btnLoginDoctorModal').click();
+    });
 </script>
+
 </html>

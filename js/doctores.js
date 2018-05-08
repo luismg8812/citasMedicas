@@ -2,7 +2,7 @@ var refEditarDoctor;
 
 function buscarDoctores() {
     var user = firebase.auth().currentUser;
-   
+
     var refDoctor;
     var filasTablaDoctores = "";
     refDoctor = firebase.database().ref().child("doctores/");
@@ -10,7 +10,7 @@ function buscarDoctores() {
     refDoctor.once("value", function (snap) {
         var datos = snap.val();
         for (var key in datos) {
-           
+
             if (datos[key].user == user.uid) {
                 //alert(datos[key].user+"entra a buscar doctores2:"+user.uid);
                 //alert(key);
@@ -44,6 +44,7 @@ function crearDoctor() {
     var fijoDoctor = document.getElementById('fijoDoctor').value;
     var celularDoctor = document.getElementById('celularDoctor').value;
     var registroMedicoDoctor = document.getElementById('registroMedicoDoctor').value;
+    var claveDoctor = document.getElementById('claveDoctor').value;
     if (refEditarDoctor != null) {
         refEditarDoctor.set({
             primerNombreDoctor: primerNombreDoctor,
@@ -57,12 +58,13 @@ function crearDoctor() {
             emailDoctor: emailDoctor,
             fijoDoctor: fijoDoctor,
             celularDoctor: celularDoctor,
-            registroMedicoDoctor:registroMedicoDoctor,            
-            user: user.uid
+            registroMedicoDoctor: registroMedicoDoctor,
+            user: user.uid,
+            claveDoctor: claveDoctor
         });
     } else {
         refEditarDoctor = null;
-        refDoctor = firebase.database().ref("doctores/"+identificacionDoctor);
+        refDoctor = firebase.database().ref("doctores/" + identificacionDoctor);
         refDoctor.set({
             primerNombreDoctor: primerNombreDoctor,
             segundoNombreDoctor: segundoNombreDoctor,
@@ -75,7 +77,8 @@ function crearDoctor() {
             emailDoctor: emailDoctor,
             fijoDoctor: fijoDoctor,
             celularDoctor: celularDoctor,
-            registroMedicoDoctor:registroMedicoDoctor,   
+            registroMedicoDoctor: registroMedicoDoctor,
+            claveDoctor: claveDoctor,
             user: user.uid
         });
     }
@@ -97,8 +100,27 @@ function editarDoctor(btn) {
         document.getElementById('direccionDoctor').value = snap.val().direccionDoctor;
         document.getElementById('emailDoctor').value = snap.val().emailDoctor;
         document.getElementById('fijoDoctor').value = snap.val().fijoDoctor;
-        document.getElementById('celularDoctor').value = snap.val().celularDoctor; 
-        document.getElementById('registroMedicoDoctor').value = snap.val().registroMedicoDoctor;      
+        document.getElementById('celularDoctor').value = snap.val().celularDoctor;
+        document.getElementById('registroMedicoDoctor').value = snap.val().registroMedicoDoctor;
+        document.getElementById('claveDoctor').value = snap.val().claveDoctor;
         //alert(result);
+    });
+}
+
+function loginDoctor() {
+    //alert("login doctor");
+    var emailLoginDoctor = document.getElementById('emailLoginDoctor').value;
+    var passwordLoginDoctor = document.getElementById('passwordLoginDoctor').value;
+    var refDoctor = firebase.database().ref().child("doctores/");
+    var resul = refDoctor.orderByChild("emailDoctor").equalTo(emailLoginDoctor).limitToFirst(1).on("value", function (snapshot) {
+        var datos = snapshot.val();
+        for (var key in datos) { 
+            if(datos[key].claveDoctor==passwordLoginDoctor){
+                sessionStorage.setItem("loginDoctor", datos[key].emailDoctor);
+                $("#loginDoctorModal").modal("hide");
+                //alert("logueado");
+            }
+        }
+        
     });
 }
