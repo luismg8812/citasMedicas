@@ -10,23 +10,29 @@ function crearCita() {
         alert("Debe seleccionar un paciente");
         return;
     }
+
     var idEvento = document.getElementById("idEvento").value;
     if (idEvento == '') {
         idEvento = diaCita + inicioCita + identificacionPaciente;
         idEvento = idEvento.replace("-", ":");
     }
-    refEvento = firebase.database().ref("eventos/" + idEvento);
-    refEvento.set({
-        editable: 'true',
-        end: diaCita + " " + finCita,
-        idProfecional: user.uid,
-        idPaciente: identificacionPaciente,
-        start: diaCita + " " + inicioCita,
-        title: 'Cita para: ' + identificacionPaciente,
-        motivo: motivoCita,
-        id: idEvento,
-        confirmada: false,
-        costo: 0
+
+    var refEditarPacienteTemp = firebase.database().ref("pacientes/" + identificacionPaciente);
+    refEditarPacienteTemp.once("value", function (snap) {
+        var datos = snap.val();
+        refEvento = firebase.database().ref("eventos/" + idEvento);
+        refEvento.set({
+            editable: 'true',
+            end: diaCita + " " + finCita,
+            idProfecional: user.uid,
+            idPaciente: identificacionPaciente,
+            start: diaCita + " " + inicioCita,
+            title: datos['primerNombrePaciente'] + ' ' + datos['primerApellidoPaciente'] + '-' + identificacionPaciente,
+            motivo: motivoCita,
+            id: idEvento,
+            confirmada: false,
+            costo: 0
+        });
     });
     $("#crearCitaModal").modal("hide");
     //alert("Cita creada Exitosamente");
@@ -46,6 +52,24 @@ function cargarDespuesGuardar() {
         $('#calendar').fullCalendar('addEventSource', eventos);
         $('#calendar').fullCalendar('refetchEvents');
     });
+}
+
+function cargarDespuesGuardarCitasAux() {
+    var user = firebase.auth().currentUser;
+    var refCitas = firebase.database().ref().child("eventos/");
+    var resul = refCitas.orderByChild("idProfecional").equalTo(user.uid).on("value", function (snapshot) {
+        datos = snapshot.val();
+        var eventos = [];
+        for (var key in datos) {
+            if (!datos[key].confirmada) {
+                eventos.push(datos[key]);
+            }
+        }
+        $('#calendarAux').fullCalendar('removeEvents');
+        $('#calendarAux').fullCalendar('addEventSource', eventos);
+        $('#calendarAux').fullCalendar('refetchEvents');
+    });
+
 }
 
 function cargarCitas() {
@@ -132,13 +156,29 @@ function cargarCitas() {
                 var fin = calEvent.end.format().split("T");
                 console.log(fin);
                 document.getElementById("dia").value
+                var refPaciente = firebase.database().ref().child("pacientes/");
+                var filasTablaPacientes = ' ';
+                refPaciente.once("value", function (snap) {
+                    var datos = snap.val();
+                    for (var key in datos) {
+                        if (datos[key].user == user.uid) {
+                            var nombre = datos[key].primerNombrePaciente + ' ' + datos[key].primerApellidoPaciente;
+                            filasTablaPacientes = filasTablaPacientes + '  <option value="' + datos[key].identificacionPaciente + '">' + nombre + '</option>';
+                        }
+                    }
+                    document.getElementById("browsers").innerHTML = filasTablaPacientes;
+                });
                 switch (view.name) {
                     case 'month':
                         document.getElementById("dia").value = res[0];
+                        document.getElementById("inicio").value = res[1];
+                        document.getElementById("fin").value = fin[1];
                         $(this).css('background-color', 'red');
                         break;
                     case 'agendaWeek':
                         document.getElementById("dia").value = res[0];
+                        document.getElementById("inicio").value = res[1];
+                        document.getElementById("fin").value = fin[1];
 
                         break;
                     case 'agendaDay':
@@ -260,38 +300,46 @@ function cargarCitasDiaDoctor() {
             ],
             eventClick: function (calEvent, jsEvent, view) {
                 $(document).ready(function () {
-                    $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
+                    try {
+                        $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
 
-                    var generoPaciente = "";
-                    var edadPacienteHv = "";
-                    var refPaciente = firebase.database().ref("pacientes/" + calEvent.idPaciente).once('value').then(function (sn) {
-                        var dato = sn.val();
-                        edadPacienteHv = dato['fechaPaciente']
-                        generoPaciente = dato['sexoPaciente'];
+                        var generoPaciente = "";
+                        var edadPacienteHv = "";
+                        var nombrePacienteHv = "";
+                        var refPaciente = firebase.database().ref("pacientes/" + calEvent.idPaciente).once('value').then(function (sn) {
+                            var dato = sn.val();
+                            edadPacienteHv = dato['fechaPaciente']
+                            generoPaciente = dato['sexoPaciente'];
+                            nombrePacienteHv = dato['primerNombrePaciente'] + ' ' + dato['segundoNombrePaciente'] + ' ' + dato['primerApellidoPaciente'];
+                        });
 
-                    });
+                        var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + calEvent.idPaciente).once('value').then(function (snapshot1) {
+                            var datos1 = snapshot1.val();
 
-                    var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + calEvent.idPaciente).once('value').then(function (snapshot1) {
-                        var datos1 = snapshot1.val();
-                        $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
-                        $("#nombrePacienteHv").val(datos1['primerNombrePaciente']);
-                        $("#identificacionPacienteHv").val(calEvent.idPaciente);
-                        $("#generoPacienteHv").val(generoPaciente);
-                        $("#motivoConsultaPacienteHv").val(calEvent.motivo);
-                        document.getElementById("idHistoriaClinica").value = calEvent.idPaciente;
-                        $('#fumaPacienteHv').prop('checked', datos1['fuma']);
-                        $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
-                        $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
-                        $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
-                        $("#medicamentosPacienteHv").val(datos1['medicamentos']);
-                        $("#alergiasPacienteHv").val(datos1['alergias']);
-                        $("#socialesPacienteHv").val(datos1['antecedentesSociales']);
-                        $("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
-                    });
-
-
-                    //falta hacer la parte que cargue la historia clinica, ver como haceer
-                    //que cargue la hv y si no existe que la cree.... todo eso aqui adentro 
+                            var datos1 = snapshot1.val();
+                            var datos1 = snapshot1.val();
+                            $("#fechaConsultaHv").val(new Date);
+                            $("#sesionesHv").val(datos1['sesionesHv']);
+                            $("#planManejoHv").val(datos1['planManejoHv']);
+                            $('#medicoRemiteHv').val(datos1['medicoRemiteHv']);
+                            $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
+                            $("#nombrePacienteHv").val(nombrePacienteHv);
+                            $("#identificacionPacienteHv").val(calEvent.idPaciente);
+                            $("#generoPacienteHv").val(generoPaciente);
+                            $("#motivoConsultaPacienteHv").val(calEvent.motivo);
+                            $("#idHistoriaClinica").val(calEvent.idPaciente);
+                            $('#fumaPacienteHv').prop('checked', datos1['fuma']);
+                            $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
+                            $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
+                            $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
+                            $("#medicamentosPacienteHv").val(datos1['medicamentos']);
+                            $("#alergiasPacienteHv").val(datos1['alergias']);
+                            $("#socialesPacienteHv").val(datos1['antecedentesSociales']);
+                            $("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
+                        });
+                    } catch (error) {
+                        $('#opciones').load('pages/citas/citasDiaDoctor.html');
+                    }
                 });
             }
         });
@@ -305,8 +353,14 @@ function cargarCitasDiaAux() {
     var resul = refCitas.orderByChild("idProfecional").equalTo(user.uid).on("value", function (snapshot) {
         datos = snapshot.val();
         var eventos = [];
+        console.log(datos);
         for (var key in datos) {
-            eventos.push(datos[key]);
+
+            if (!datos[key].confirmada) {
+
+                eventos.push(datos[key]);
+            }
+
             // alert(eventos);
             // console.log(datos[key]);
         }
@@ -337,7 +391,5 @@ function guardarConfirmacion() {
         costo: costoCita
     });
     $("#confirmarCita").modal("hide");
-    //if(si confirmacion es true le cambia de color a la cita){
-    // $(this).css('border-color', 'red');
-    //}
+    cargarDespuesGuardarCitasAux()
 }

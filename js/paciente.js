@@ -19,6 +19,8 @@ function crarPaciente() {
     var fijoPaciente = document.getElementById('fijoPaciente').value;
     var celularPaciente = document.getElementById('celularPaciente').value;
     if (refEditarPaciente != null) {
+
+
         refEditarPaciente.set({
             primerNombrePaciente: primerNombrePaciente,
             segundoNombrePaciente: segundoNombrePaciente,
@@ -76,6 +78,20 @@ function crarPaciente() {
     $("#crearPaciente").modal("hide");
 }
 
+function buscarRepetido() {
+    var identificacionPaciente = document.getElementById('identificacionPaciente').value;
+    //alert("entra a buscar repetido: "+identificacionPaciente);
+    var refEditarPacienteTemp = firebase.database().ref("pacientes/" + identificacionPaciente);
+    refEditarPacienteTemp.once("value", function (snap) {
+        var datos = snap.val();
+        try {
+            alert("El paciente con identificación " + datos['identificacionPaciente'] + " ya existe, si continua la información guardada actual sará reemplazada con la informacion que se  esta intentando ingresar");
+        } catch (error) {
+            console.log("identificacion de paciente no existe");
+        }
+    });
+}
+
 function buscarPacientes() {
     var user = firebase.auth().currentUser;
     //alert("entra a buscar pacientes");
@@ -104,7 +120,6 @@ function buscarPacientes() {
 
                 table.row.add(data).draw();
             }
-
         }
 
         // tablaPacientes.innerHTML = filasTablaPacientes;
@@ -140,19 +155,19 @@ function editarPaciente(btn) {
 function limpiarCrearPaciente(btn) {
     //alert("aqui llega");
     $("#crearPaciente").modal("show");
-        document.getElementById('primerNombrePaciente').value = '';
-        document.getElementById('segundoNombrePaciente').value = '';
-        document.getElementById('primerApellidoPaciente').value = '';
-        document.getElementById('segundoApellidoPaciente').value = '';
-        document.getElementById('barrioPaciente').value = '';
-        document.getElementById('sexoPaciente').value = '';
-        document.getElementById('estadoCivilPaciente').value = '';
-        document.getElementById('EscolaridadPaciente').value = '';
-        document.getElementById('tipoIdentificacionPaciente').value = '';
-        document.getElementById('identificacionPaciente').value = '';
-        document.getElementById('religionPaciente').value = '';
-        document.getElementById('direccionPaciente').value = '';
-        document.getElementById('emailPaciente').value = '';
-        document.getElementById('fijoPaciente').value = '';
-        document.getElementById('celularPaciente').value = '';
+    document.getElementById('primerNombrePaciente').value = '';
+    document.getElementById('segundoNombrePaciente').value = '';
+    document.getElementById('primerApellidoPaciente').value = '';
+    document.getElementById('segundoApellidoPaciente').value = '';
+    document.getElementById('barrioPaciente').value = '';
+    document.getElementById('sexoPaciente').value = '';
+    document.getElementById('estadoCivilPaciente').value = '';
+    document.getElementById('EscolaridadPaciente').value = '';
+    document.getElementById('tipoIdentificacionPaciente').value = '';
+    document.getElementById('identificacionPaciente').value = '';
+    document.getElementById('religionPaciente').value = '';
+    document.getElementById('direccionPaciente').value = '';
+    document.getElementById('emailPaciente').value = '';
+    document.getElementById('fijoPaciente').value = '';
+    document.getElementById('celularPaciente').value = '';
 }

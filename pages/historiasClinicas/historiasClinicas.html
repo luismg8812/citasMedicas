@@ -6,7 +6,7 @@
     </div>
 </div>
 <form>
-    <input type="hidden" id="idHistoriaClinica">
+    <input type="hidden" id="idHistoriaClinica" value="">
     <div class="form-group row">
         <label for="nombrePacienteHv" class="col-sm-2 col-form-label">Paciente: </label>
         <div class="col-sm-12 col-md-3">
@@ -32,15 +32,45 @@
         </div>
     </div>
     <div class="form-group row">
+        <label for="fechaConsultaHv" class="col-sm-2 col-form-label">Fecha consulta: </label>
+        <div class="col-sm-12 col-md-3">
+            <input  class="form-control" id="fechaConsultaHv" type="date" value="">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="sesionesHv" class="col-sm-2 col-form-label">Sesiones: </label>
+        <div class="col-sm-12 col-md-3">
+            <input  class="form-control" id="sesionesHv" value="" >
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="medicoRemiteHv" class="col-sm-2 col-form-label">Medico Remite: </label>
+        <div class="col-sm-12 col-md-3">
+            <input  class="form-control" id="medicoRemiteHv" value="" >
+        </div>
+    </div>
+    <div class="form-group row">
         <label for="motivoConsultaPacienteHv" class="col-sm-2 col-form-label">Motivo consulta: </label>
         <div class="col-sm-12 ">
             <textarea class="form-control" id="motivoConsultaPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 70px;line-height:15px"></textarea>
         </div>
     </div>
     <div class="form-group row">
-        <label for="enfermedadActualPacienteHv" class="col-sm-2 col-form-label">Enfermedad Actual: </label>
+        <label for="enfermedadActualPacienteHv" class="col-sm-2 col-form-label">Evolución: </label>
         <div class="col-sm-12 ">
             <textarea class="form-control" id="enfermedadActualPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 200px;line-height:15px"></textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="diagnosticoPacienteHv" class="col-sm-2 col-form-label">Diagnóstico: </label>
+        <div class="col-sm-12 ">
+            <textarea class="form-control" id="diagnosticoPacienteHv" rows="2" style="border: 1px solid #ced4da;height: 200px;line-height:15px"></textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="planManejoHv" class="col-sm-2 col-form-label">Plan de manejo: </label>
+        <div class="col-sm-12 ">
+            <textarea class="form-control" id="planManejoHv" rows="2" style="border: 1px solid #ced4da;height: 200px;line-height:15px"></textarea>
         </div>
     </div>
     <p>   
@@ -55,7 +85,7 @@
             </div>
         </div>
       </div>
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-1 mt-2">
             <label class="form-check-label mr-2" for="fumaPacienteHv">Fuma</label>
         </div>
@@ -106,6 +136,13 @@
         </div>
     </div>
     <button type="button" onclick="guardarHistoriaClinica()" class="btn btn-primary">Guardar</button>
+    <button type="button" onclick="imprimirHv()" class="btn btn-primary">Imprimir</button>
+    
+    <div id="content">
+       
+    </div>
+   
+    </script>
 </form>
 
 </html>
