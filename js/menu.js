@@ -47,13 +47,19 @@ function opcionMenu(op) {
                 cargarCamposProfecional();//foncion dentro del js de usuarios
             });
             break;
-            case 'loginDoctor':
+        case 'loginDoctor':
             $(document).ready(function () {
                 $('#opciones').load('pages/doctores/loginDoctor.html');
                 //document.getElementById('btnLoginDoctorModal').click();              
             });
-            break;   
-            
+            break;
+        case 'buscarHistoriaClinicaOp':
+            $(document).ready(function () {
+                $('#opciones').load('pages/pacientes/buscarHistoriaClinica.html');
+                             
+            });
+            break;
+
         default:
             $(document).ready(function () {
                 $('#opciones').load('construccion.html');

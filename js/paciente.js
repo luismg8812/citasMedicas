@@ -95,14 +95,10 @@ function buscarRepetido() {
 function buscarPacientes() {
     var user = firebase.auth().currentUser;
     //alert("entra a buscar pacientes");
-
     var refPaciente;
     var filasTablaPacientes = "";
-
     refPaciente = firebase.database().ref().child("pacientes/");
-
     var table = $('#tablePacientesJquery').DataTable();
-
     filasTablaPacientes = "";
     var user = firebase.auth().currentUser;
     refPaciente.once("value", function (snap) {
@@ -112,16 +108,14 @@ function buscarPacientes() {
                 //alert(key);
                 var data = [];
                 var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
-                var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
+                var botonHistoriaClinica = ' <button type="button" key="' + key + '" onclick="cargarHistoriaClinica(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
                 //alert(botonEdit);
-                data.push(botonEdit);
+                data.push(botonEdit+botonHistoriaClinica);               
                 data.push(datos[key].primerNombrePaciente + ' ' + datos[key].primerApellidoPaciente);
                 data.push(datos[key].identificacionPaciente);
-
                 table.row.add(data).draw();
             }
         }
-
         // tablaPacientes.innerHTML = filasTablaPacientes;
     });
 
@@ -170,4 +164,45 @@ function limpiarCrearPaciente(btn) {
     document.getElementById('emailPaciente').value = '';
     document.getElementById('fijoPaciente').value = '';
     document.getElementById('celularPaciente').value = '';
+}
+
+
+function cargarHistoriaClinica(btn) {
+    var editar = btn.getAttribute("key");
+    $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
+
+    var generoPaciente = "";
+    var edadPacienteHv = "";
+    var nombrePacienteHv = "";
+    var refPaciente = firebase.database().ref("pacientes/" + editar).once('value').then(function (sn) {
+        var dato = sn.val();
+        edadPacienteHv = dato['fechaPaciente']
+        generoPaciente = dato['sexoPaciente'];
+        nombrePacienteHv = dato['primerNombrePaciente'] + ' ' + dato['segundoNombrePaciente'] + ' ' + dato['primerApellidoPaciente'];
+    });
+
+    var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + editar).once('value').then(function (snapshot1) {
+        var datos1 = snapshot1.val();
+
+        var datos1 = snapshot1.val();
+        var datos1 = snapshot1.val();
+        $("#fechaConsultaHv").val(new Date);
+        $("#sesionesHv").val(datos1['sesionesHv']);
+        $("#planManejoHv").val(datos1['planManejoHv']);
+        $('#medicoRemiteHv').val(datos1['medicoRemiteHv']);
+        $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
+        $("#nombrePacienteHv").val(nombrePacienteHv);
+        $("#identificacionPacienteHv").val(editar);
+        $("#generoPacienteHv").val(generoPaciente);
+        $("#motivoConsultaPacienteHv").val("");
+        $("#idHistoriaClinica").val(editar);
+        $('#fumaPacienteHv').prop('checked', datos1['fuma']);
+        $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
+        $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
+        $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
+        $("#medicamentosPacienteHv").val(datos1['medicamentos']);
+        $("#alergiasPacienteHv").val(datos1['alergias']);
+        $("#socialesPacienteHv").val(datos1['antecedentesSociales']);
+        $("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
+    });
 }

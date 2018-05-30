@@ -126,3 +126,37 @@ function imprimirHv() {
 function alinearTexto(texto){
     alert(texto);
 }
+
+function buscarHistoriasClinicas(){
+    var user = firebase.auth().currentUser;
+    //alert("entra a buscar pacientes");
+
+    var refPaciente;
+    var filasTablaPacientes = "";
+
+    refPaciente = firebase.database().ref().child("pacientes/");
+
+    var table = $('#tablePacientesJquery').DataTable();
+
+    filasTablaPacientes = "";
+    var user = firebase.auth().currentUser;
+    refPaciente.once("value", function (snap) {
+        var datos = snap.val();
+        for (var key in datos) {
+            if (datos[key].user == user.uid) {
+                //alert(key);
+                var data = [];
+                var botonEdit = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-pencil\" aria-hidden=\"true\" ></i> </button>';
+                var botonVer = ' <button type="button" key="' + key + '" onclick="editarPaciente(this)" > <i class=\"fa fa-search\" aria-hidden=\"true\" ></i> </button>';
+                //alert(botonEdit);
+                data.push(botonEdit);
+                data.push(datos[key].primerNombrePaciente + ' ' + datos[key].primerApellidoPaciente);
+                data.push(datos[key].identificacionPaciente);
+
+                table.row.add(data).draw();
+            }
+        }
+
+        // tablaPacientes.innerHTML = filasTablaPacientes;
+    });
+}
