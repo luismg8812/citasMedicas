@@ -169,6 +169,12 @@ function limpiarCrearPaciente(btn) {
 
 function cargarHistoriaClinica(btn) {
     var editar = btn.getAttribute("key");
+
+    if (sessionStorage.getItem("loginDoctor") == null) {
+        $('#opciones').load('pages/doctores/loginDoctor.html'); 
+        return;
+    }
+
     $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
 
     var generoPaciente = "";
@@ -200,7 +206,7 @@ function cargarHistoriaClinica(btn) {
         $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
         $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
         $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
-        $("#medicamentosPacienteHv").val(datos1['medicamentos']);
+        $("#medicamentosPacienteHv").val(datos1['medicamentosPacienteHv']);
         $("#alergiasPacienteHv").val(datos1['alergias']);
         $("#socialesPacienteHv").val(datos1['antecedentesSociales']);
         $("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);

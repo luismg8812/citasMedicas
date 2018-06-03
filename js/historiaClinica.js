@@ -13,15 +13,19 @@ function guardarHistoriaClinica() {
         sesionesHv: $("#sesionesHv").val(),
         medicoRemiteHv: $("#medicoRemiteHv").val(),
         planManejoHv: $("#planManejoHv").val(),
-
+        medicamentosPacienteHv: $("#medicamentosPacienteHv").val(),
         usoDrogas: $('#usoDrogasPacienteHv').prop('checked')
     });
+    var doctor = sessionStorage.getItem("loginDoctor");
+    console.log(doctor);
     var refConsultas = firebase.database().ref("consultas/");
     refConsultas.push({
         evolucion: $("#enfermedadActualPacienteHv").val(),
         fecha: m,
+        identificacionDoctor: doctor,
         identificacionPaciente: $("#identificacionPacienteHv").val(),
         diagnosticoPacienteHv: $("#diagnosticoPacienteHv").val(),
+
         motivoConsulta: $("#motivoConsultaPacienteHv").val()
 
     });
@@ -102,7 +106,7 @@ function imprimirHv() {
 
         function (dispose) {
             var fontSizeTitle = 20;
-            var fontSizeText = 12;  
+            var fontSizeText = 12;
             var user = firebase.auth().currentUser;
             var refUsuarios = firebase.database().ref("usuarios/" + user.uid);
             refUsuarios.once("value", function (snap) {
@@ -116,18 +120,92 @@ function imprimirHv() {
                 pdf.text(datos['nombreProfecional'], 50, 50);
                 pdf.save('Test.pdf');
             });
-           
-            
+
+
         }, margins
     );
 
 }
 
-function alinearTexto(texto){
+function imprimirFormulacion() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    pdf.setFont('arial');
+    source = $('#content')[0];
+    specialElementHandlers = {
+        '#bypassme': function (element, renderer) {
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+    pdf.fromHTML(
+        source, // HTML string or DOM elem ref.
+        margins.left, // x coord
+        margins.top, { // y coord
+            'width': margins.width, // max width of content on PDF
+            'elementHandlers': specialElementHandlers
+        },
+        function (dispose) {
+            var fontSizeTitle = 20;
+            var fontSizeText = 12;
+            var user = firebase.auth().currentUser;
+            var refUsuarios = firebase.database().ref("usuarios/" + user.uid);
+            refUsuarios.once("value", function (snap) {
+                var datos = snap.val();
+                pdf.setFontSize(fontSizeTitle);
+                pdf.setFontType('bold')
+                pdf.text(datos['nombreProfecional'], 50, 50);
+                pdf.setFontSize(fontSizeText);
+                pdf.setFontType('normal');
+                pdf.text('Dirección: ' + datos['direccionProfecional'], 50, 60);
+                pdf.text('Celular: ' + datos['celularProfecional'], 50, 70);
+                pdf.text('Fijo: ' + datos['fijoProfecional'], 50, 80);
+                pdf=splictTexto(pdf, 'R:/  ' + $("#formulacion").val(),  50, 100);
+                pdf.save('Formula' + datos['nombreProfecional'] + '.pdf');
+            });
+        }, margins
+    );
+}
+
+function splictTexto(pdf, texto, x, y) {
+    var lines = [];
+    var tope = 80;
+    var topeY =  700;
+    var i;
+    var linea = '';
+    var yInicio = y;
+    for (i = 0; i < texto.length; i++) {
+        if (linea.length >= tope && texto[i] == ' ') {
+            lines.push(linea);
+            linea = '';
+        } else {
+            linea += texto[i];
+        }
+    }
+    lines.push(linea);
+    for (var indice in lines) {
+        pdf.text(lines[indice], x, y);
+        y += 10;
+        if(y>topeY){
+            y=yInicio;
+            pdf.addPage();
+        }
+    }
+    console.log(lines);
+    return pdf;
+    
+  
+}
+
+function alinearTexto(texto) {
     alert(texto);
 }
 
-function buscarHistoriasClinicas(){
+function buscarHistoriasClinicas() {
     var user = firebase.auth().currentUser;
     //alert("entra a buscar pacientes");
 

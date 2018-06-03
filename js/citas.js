@@ -301,48 +301,53 @@ function cargarCitasDiaDoctor() {
             eventClick: function (calEvent, jsEvent, view) {
                 $(document).ready(function () {
                     try {
-                        $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
-
-                        var generoPaciente = "";
-                        var edadPacienteHv = "";
-                        var nombrePacienteHv = "";
-                        var refPaciente = firebase.database().ref("pacientes/" + calEvent.idPaciente).once('value').then(function (sn) {
-                            var dato = sn.val();
-                            edadPacienteHv = dato['fechaPaciente']
-                            generoPaciente = dato['sexoPaciente'];
-                            nombrePacienteHv = dato['primerNombrePaciente'] + ' ' + dato['segundoNombrePaciente'] + ' ' + dato['primerApellidoPaciente'];
-                        });
-
-                        var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + calEvent.idPaciente).once('value').then(function (snapshot1) {
-                            var datos1 = snapshot1.val();
-
-                            var datos1 = snapshot1.val();
-                            var datos1 = snapshot1.val();
-                            $("#fechaConsultaHv").val(new Date);
-                            $("#sesionesHv").val(datos1['sesionesHv']);
-                            $("#planManejoHv").val(datos1['planManejoHv']);
-                            $('#medicoRemiteHv').val(datos1['medicoRemiteHv']);
-                            $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
-                            $("#nombrePacienteHv").val(nombrePacienteHv);
-                            $("#identificacionPacienteHv").val(calEvent.idPaciente);
-                            $("#generoPacienteHv").val(generoPaciente);
-                            $("#motivoConsultaPacienteHv").val(calEvent.motivo);
-                            $("#idHistoriaClinica").val(calEvent.idPaciente);
-                            $('#fumaPacienteHv').prop('checked', datos1['fuma']);
-                            $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
-                            $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
-                            $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
-                            $("#medicamentosPacienteHv").val(datos1['medicamentos']);
-                            $("#alergiasPacienteHv").val(datos1['alergias']);
-                            $("#socialesPacienteHv").val(datos1['antecedentesSociales']);
-                            $("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
-                        });
+                        if (sessionStorage.getItem("loginDoctor") != null) {
+                            goHistorioaClinica(calEvent);
+                        } else {
+                            $('#opciones').load('pages/doctores/loginDoctor.html'); 
+                        }
                     } catch (error) {
                         $('#opciones').load('pages/citas/citasDiaDoctor.html');
                     }
                 });
             }
         });
+    });
+}
+
+function goHistorioaClinica(calEvent) {
+    $('#opciones').load('pages/historiasClinicas/historiasClinicas.html');
+
+    var generoPaciente = "";
+    var edadPacienteHv = "";
+    var nombrePacienteHv = "";
+    var refPaciente = firebase.database().ref("pacientes/" + calEvent.idPaciente).once('value').then(function (sn) {
+        var dato = sn.val();
+        edadPacienteHv = dato['fechaPaciente']
+        generoPaciente = dato['sexoPaciente'];
+        nombrePacienteHv = dato['primerNombrePaciente'] + ' ' + dato['segundoNombrePaciente'] + ' ' + dato['primerApellidoPaciente'];
+    });
+
+    var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + calEvent.idPaciente).once('value').then(function (snapshot1) {
+        var datos1 = snapshot1.val();
+        $("#fechaConsultaHv").val(new Date);
+        $("#sesionesHv").val(datos1['sesionesHv']);
+        $("#planManejoHv").val(datos1['planManejoHv']);
+        $('#medicoRemiteHv').val(datos1['medicoRemiteHv']);
+        $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
+        $("#nombrePacienteHv").val(nombrePacienteHv);
+        $("#identificacionPacienteHv").val(calEvent.idPaciente);
+        $("#generoPacienteHv").val(generoPaciente);
+        $("#motivoConsultaPacienteHv").val(calEvent.motivo);
+        $("#idHistoriaClinica").val(calEvent.idPaciente);
+        $('#fumaPacienteHv').prop('checked', datos1['fuma']);
+        $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
+        $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
+        $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
+        $("#medicamentosPacienteHv").val(datos1['medicamentosPacienteHv']);
+        $("#alergiasPacienteHv").val(datos1['alergias']);
+        $("#socialesPacienteHv").val(datos1['antecedentesSociales']);
+        $("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
     });
 }
 
