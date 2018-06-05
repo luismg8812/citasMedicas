@@ -179,7 +179,7 @@ function splictTexto(pdf, texto, x, y) {
     var linea = '';
     var yInicio = y;
     for (i = 0; i < texto.length; i++) {
-        if (linea.length >= tope && texto[i] == ' ') {
+        if ((linea.length >= tope && texto[i] == ' ')|| texto[i]=='\n' ) {
             lines.push(linea);
             linea = '';
         } else {
