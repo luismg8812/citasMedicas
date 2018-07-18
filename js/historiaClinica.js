@@ -1,6 +1,7 @@
 function guardarHistoriaClinica() {
 
-    var m = moment().format();
+    var m = moment().format($("#fechaConsultaHv").val());
+    
     //alert(m);
     var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + $("#identificacionPacienteHv").val());
     refHistoriasClinicas.update({
@@ -71,61 +72,7 @@ function traeConsultas() {
     });
 
 }
-function imprimirHv() {
-    var texto = "ormally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you this case, it don't belong to me. Besides, I've already been through too much shit this morning over this case to hand it over to your dumb ass.";
-    var pdf = new jsPDF('p', 'pt', 'letter');
-    pdf.setFont('arial');
-    source = $('#content')[0];
 
-    // we support special element handlers. Register them with jQuery-style 
-    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-    // There is no support for any other type of selectors 
-    // (class, of compound) at this time.
-    specialElementHandlers = {
-        // element with id of "bypass" - jQuery style selector
-        '#bypassme': function (element, renderer) {
-            // true = "handled elsewhere, bypass text extraction"
-            return true
-        }
-    };
-    margins = {
-        top: 80,
-        bottom: 60,
-        left: 40,
-        width: 522
-    };
-    // all coords and widths are in jsPDF instance's declared units
-    // 'inches' in this case
-    pdf.fromHTML(
-        source, // HTML string or DOM elem ref.
-        margins.left, // x coord
-        margins.top, { // y coord
-            'width': margins.width, // max width of content on PDF
-            'elementHandlers': specialElementHandlers
-        },
-
-        function (dispose) {
-            var fontSizeTitle = 20;
-            var fontSizeText = 12;
-            var user = firebase.auth().currentUser;
-            var refUsuarios = firebase.database().ref("usuarios/" + user.uid);
-            refUsuarios.once("value", function (snap) {
-                var datos = snap.val();
-                pdf.setFontSize(fontSizeTitle);
-                pdf.setFontType('bold')
-                console.log(datos['nombreProfecional']);
-                pdf.text(datos['nombreProfecional'], 50, 50);
-                pdf.setFontSize(fontSizeText);
-                pdf.setFontType('normal');
-                pdf.text(datos['nombreProfecional'], 50, 50);
-                pdf.save('Test.pdf');
-            });
-
-
-        }, margins
-    );
-
-}
 
 function imprimirFormulacion() {
     var pdf = new jsPDF('p', 'pt', 'letter');
@@ -164,8 +111,106 @@ function imprimirFormulacion() {
                 pdf.text('Dirección: ' + datos['direccionProfecional'], 50, 60);
                 pdf.text('Celular: ' + datos['celularProfecional'], 50, 70);
                 pdf.text('Fijo: ' + datos['fijoProfecional'], 50, 80);
-                pdf=splictTexto(pdf, 'R:/  ' + $("#formulacion").val(),  50, 100);
+                pdf = splictTexto(pdf, 'R:/  ' + $("#formulacion").val(), 50, 100);
                 pdf.save('Formula' + datos['nombreProfecional'] + '.pdf');
+            });
+        }, margins
+    );
+}
+
+function imprimirHistoriaClinica() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    pdf.setFont('arial');
+    source = $('#content')[0];
+    specialElementHandlers = {
+        '#bypassme': function (element, renderer) {
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+    pdf.fromHTML(
+        source, // HTML string or DOM elem ref.
+        margins.left, // x coord
+        margins.top, { // y coord
+            'width': margins.width, // max width of content on PDF
+            'elementHandlers': specialElementHandlers
+        },
+        function (dispose) {
+            var fontSizeTitle = 20;
+            var fontSizeText = 12;
+            var user = firebase.auth().currentUser;
+            var generoPaciente = "";
+            var edadPacienteHv = "";
+            var nombrePacienteHv = "";
+            var estadoCivilPaciente = "";
+            var escolaridadPaciente = "";
+            var direccionPaciente = "";
+            var celularPaciente = "";
+            var medicoRemiteHv ="";
+            var sesionesHv = "";
+            var antecedentesSociales = "";
+            var identificacionBusquedaPaciente = document.getElementById("idHistoriaClinica").value;
+            var refPaciente = firebase.database().ref("pacientes/" + identificacionBusquedaPaciente).once('value').then(function (sn) {
+                var dato = sn.val();
+                edadPacienteHv = dato['fechaPaciente']
+                estadoCivilPaciente = dato['estadoCivilPaciente'];
+                generoPaciente = dato['sexoPaciente'];
+                escolaridadPaciente = dato['EscolaridadPaciente'];
+                direccionPaciente = dato['direccionPaciente'];
+                celularPaciente = dato['celularPaciente'];
+                nombrePacienteHv = dato['primerNombrePaciente'] + ' ' + dato['segundoNombrePaciente'] + ' ' + dato['primerApellidoPaciente'];
+            });
+            var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + identificacionBusquedaPaciente).once('value').then(function (snapshot1) {
+                var datos1 = snapshot1.val();
+                //$("#fechaConsultaHv").val(new Date);
+                sesionesHv=datos1['sesionesHv'];
+                //$("#planManejoHv").val(datos1['planManejoHv']);
+                medicoRemiteHv=datos1['medicoRemiteHv'];
+                // $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
+                // $("#nombrePacienteHv").val(nombrePacienteHv);
+                // $("#identificacionPacienteHv").val(calEvent.idPaciente);
+                // $("#generoPacienteHv").val(generoPaciente);
+                // $("#motivoConsultaPacienteHv").val(calEvent.motivo);
+                // $("#idHistoriaClinica").val(calEvent.idPaciente);
+                // $('#fumaPacienteHv').prop('checked', datos1['fuma']);
+                // $('#alcoholPacienteHv').prop('checked', datos1['alcoholicas']);
+                // $('#usoDrogasPacienteHv').prop('checked', datos1['usadrogas']);
+                // $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
+                // $("#medicamentosPacienteHv").val(datos1['medicamentosPacienteHv']);
+                // $("#alergiasPacienteHv").val(datos1['alergias']);
+                antecedentesSociales=datos1['antecedentesSociales'];
+                //$("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
+            });
+
+            var refUsuarios = firebase.database().ref("usuarios/" + user.uid);
+            refUsuarios.once("value", function (snap) {
+                var datos = snap.val();
+                pdf.setFontSize(fontSizeTitle);
+                pdf.setFontType('bold')
+                pdf.text(datos['nombreProfecional'], 50, 50);
+                pdf.setFontSize(fontSizeText);
+                pdf.setFontType('arial');
+                pdf.text('NIT: ' + datos['identificacionProfecional'] + " FISIOTERAPEUTA - CLARA XIMENA MAZABEL C", 50, 60);
+                pdf.text('Dirección: ' + datos['direccionProfecional'] + "; TELEFONO: " + datos['celularProfecional'], 50, 70);
+
+                pdf.text('                 EVOLUCIÓN DE INGRESO – TERAPIA FISICA', 50, 100);
+                pdf.text('', 50, 110);
+                pdf.text('Nombres y apellidos: ' + nombrePacienteHv, 50, 120);
+                pdf.text('Fecha de Nacimiento: ' + edadPacienteHv + ';  Edad: ' + calcularEdad(edadPacienteHv) + ';  Documento de identidad: ' + identificacionBusquedaPaciente, 50, 130);
+                pdf.text('Género: ' + generoPaciente + ';  Estado Civil: ' + estadoCivilPaciente, 50, 140);
+                pdf.text('Escolarida: ' + escolaridadPaciente + ';  Dirección: ' + direccionPaciente + ';  Teléfono: ' + celularPaciente, 50, 150);
+                pdf.text('Médico Remitente: '+medicoRemiteHv, 50, 170);
+                pdf.text('Número de Sesiones: '+sesionesHv, 50, 180);
+                pdf = splictTexto(pdf, 'ANTECEDENTES: ' + antecedentesSociales, 50, 190);
+                var height = pdf.internal.pageSize.height;
+                console.log(pdf);
+                pdf.save('Historia_clinica' + datos['nombreProfecional'] + '.pdf');
+                
             });
         }, margins
     );
@@ -173,13 +218,13 @@ function imprimirFormulacion() {
 
 function splictTexto(pdf, texto, x, y) {
     var lines = [];
-    var tope = 80;
-    var topeY =  700;
+    var tope = 100;
+    var topeY = 700;
     var i;
     var linea = '';
     var yInicio = y;
     for (i = 0; i < texto.length; i++) {
-        if ((linea.length >= tope && texto[i] == ' ')|| texto[i]=='\n' ) {
+        if ((linea.length >= tope && texto[i] == ' ') || texto[i] == '\n') {
             lines.push(linea);
             linea = '';
         } else {
@@ -190,15 +235,15 @@ function splictTexto(pdf, texto, x, y) {
     for (var indice in lines) {
         pdf.text(lines[indice], x, y);
         y += 10;
-        if(y>topeY){
-            y=yInicio;
+        if (y > topeY) {
+            y = yInicio;
             pdf.addPage();
         }
     }
     console.log(lines);
     return pdf;
-    
-  
+
+
 }
 
 function alinearTexto(texto) {

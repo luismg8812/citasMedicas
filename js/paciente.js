@@ -99,6 +99,7 @@ function buscarPacientes() {
     var filasTablaPacientes = "";
     refPaciente = firebase.database().ref().child("pacientes/");
     var table = $('#tablePacientesJquery').DataTable();
+    table.clear();
     filasTablaPacientes = "";
     var user = firebase.auth().currentUser;
     refPaciente.once("value", function (snap) {
