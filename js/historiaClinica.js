@@ -1,7 +1,8 @@
+var posY = 50;
 function guardarHistoriaClinica() {
 
     var m = moment().format($("#fechaConsultaHv").val());
-    
+
     //alert(m);
     var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + $("#identificacionPacienteHv").val());
     refHistoriasClinicas.update({
@@ -151,9 +152,10 @@ function imprimirHistoriaClinica() {
             var escolaridadPaciente = "";
             var direccionPaciente = "";
             var celularPaciente = "";
-            var medicoRemiteHv ="";
+            var medicoRemiteHv = "";
             var sesionesHv = "";
             var antecedentesSociales = "";
+            var planManejoHv = "";
             var identificacionBusquedaPaciente = document.getElementById("idHistoriaClinica").value;
             var refPaciente = firebase.database().ref("pacientes/" + identificacionBusquedaPaciente).once('value').then(function (sn) {
                 var dato = sn.val();
@@ -168,9 +170,9 @@ function imprimirHistoriaClinica() {
             var refHistoriasClinicas = firebase.database().ref("historiasClinicas/" + identificacionBusquedaPaciente).once('value').then(function (snapshot1) {
                 var datos1 = snapshot1.val();
                 //$("#fechaConsultaHv").val(new Date);
-                sesionesHv=datos1['sesionesHv'];
-                //$("#planManejoHv").val(datos1['planManejoHv']);
-                medicoRemiteHv=datos1['medicoRemiteHv'];
+                sesionesHv = datos1['sesionesHv'];
+                planManejoHv = datos1['planManejoHv'];
+                medicoRemiteHv = datos1['medicoRemiteHv'];
                 // $("#edadPacienteHv").val(calcularEdad(edadPacienteHv));
                 // $("#nombrePacienteHv").val(nombrePacienteHv);
                 // $("#identificacionPacienteHv").val(calEvent.idPaciente);
@@ -183,9 +185,23 @@ function imprimirHistoriaClinica() {
                 // $("#tipoAlimentacionPacienteHv").val(datos1['alimentacion']);
                 // $("#medicamentosPacienteHv").val(datos1['medicamentosPacienteHv']);
                 // $("#alergiasPacienteHv").val(datos1['alergias']);
-                antecedentesSociales=datos1['antecedentesSociales'];
+                antecedentesSociales = datos1['antecedentesSociales'];
                 //$("#familiaresPacienteHv").val(datos1['antecedentesFamiliares']);
             });
+            var numConsultas = 0;
+            var tesxto="";
+            var refConsulta = firebase.database().ref().child("consultas/");
+            var resul = refConsulta.orderByChild("identificacionPaciente").equalTo(identificacionBusquedaPaciente).on("value", function (snapshot) {
+                 var datos = snapshot.val();
+                 
+                 for (var key in datos) {
+                    tesxto=tesxto+"Fecha: "+datos[key].fecha+"\n"+
+                           "Evaluación: "+datos[key].diagnosticoPacienteHv+"\n"+
+                           "Evolución: "+datos[key].evolucion+"\n\n";
+           
+                 }
+                 console.log(tesxto);
+             });
 
             var refUsuarios = firebase.database().ref("usuarios/" + user.uid);
             refUsuarios.once("value", function (snap) {
@@ -204,13 +220,21 @@ function imprimirHistoriaClinica() {
                 pdf.text('Fecha de Nacimiento: ' + edadPacienteHv + ';  Edad: ' + calcularEdad(edadPacienteHv) + ';  Documento de identidad: ' + identificacionBusquedaPaciente, 50, 130);
                 pdf.text('Género: ' + generoPaciente + ';  Estado Civil: ' + estadoCivilPaciente, 50, 140);
                 pdf.text('Escolarida: ' + escolaridadPaciente + ';  Dirección: ' + direccionPaciente + ';  Teléfono: ' + celularPaciente, 50, 150);
-                pdf.text('Médico Remitente: '+medicoRemiteHv, 50, 170);
-                pdf.text('Número de Sesiones: '+sesionesHv, 50, 180);
-                pdf = splictTexto(pdf, 'ANTECEDENTES: ' + antecedentesSociales, 50, 190);
-                var height = pdf.internal.pageSize.height;
-                console.log(pdf);
+                pdf.text('Médico Remitente: ' + medicoRemiteHv, 50, 170);
+                pdf.text('Número de Sesiones: ' + sesionesHv, 50, 180);
+                pdf.text('ANTECEDENTES PERSONALES: ', 50, 200);
+                pdf = splictTexto(pdf, antecedentesSociales, 50, 210);
+
+                posY = posY + 10;
+                pdf.text('PLAN DE MANEJO: ', 50, posY);
+                posY = posY + 10;
+                pdf = splictTexto(pdf, planManejoHv, 50, posY);
+                posY = posY + 10;
+                pdf.text('EVOLUCION DIARIA DE ASISTENCIA A TERAPIA FISICA', 50, posY);
+                posY = posY + 10;
+                pdf = splictTexto(pdf, tesxto, 50, posY);
                 pdf.save('Historia_clinica' + datos['nombreProfecional'] + '.pdf');
-                
+
             });
         }, margins
     );
@@ -220,6 +244,7 @@ function splictTexto(pdf, texto, x, y) {
     var lines = [];
     var tope = 100;
     var topeY = 700;
+    var inicioPagina=50;
     var i;
     var linea = '';
     var yInicio = y;
@@ -236,11 +261,12 @@ function splictTexto(pdf, texto, x, y) {
         pdf.text(lines[indice], x, y);
         y += 10;
         if (y > topeY) {
-            y = yInicio;
+            y = inicioPagina;
             pdf.addPage();
         }
     }
-    console.log(lines);
+    posY = y;
+    //console.log(lines);
     return pdf;
 
 
